@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: local
+
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/familytalk
+    username: depromeet
+    password: pass
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    jdbc:
+      lob:
+        non_contextual_creation: true
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+
+---
+spring:
+  profiles: local
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop

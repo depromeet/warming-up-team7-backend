@@ -1,0 +1,14 @@
+version: "2.1"
+
+services:
+  mysql:
+    image: postgres
+    container_name: postgres
+    environment:
+      - TZ=Asia/Seoul
+      - ROOT_PASSWORD=pass
+      - POSTGRES_USER=depromeet
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=familytalk
+    ports:
+    - "5432:5432"
