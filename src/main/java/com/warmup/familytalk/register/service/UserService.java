@@ -30,6 +30,7 @@ public class UserService {
                                        Arrays.asList(Role.ROLE_USER));
 
     public Mono<User> findByUsername(String username) {
+
         return Flux.just(admin, user)
                    .filter(candidate -> candidate.equalsIn(username))
                    .switchIfEmpty(Mono.error(new IllegalArgumentException("Not found username")))
