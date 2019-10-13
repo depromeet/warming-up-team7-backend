@@ -9,19 +9,6 @@ spring:
       hibernate:
         format_sql: true
 
-management:
-  server:
-    port: 443
-    ssl:
-      enabled: true
-      key-store: team7keystore.p12
-      key-store-password: teamteam7
-      trust-store: team7keystore.jks
-      trust-store-password: teamteam7
-      key-store-type: PKCS12
-      key-alias: bns-ssl
-
-
 password:
   encoder:
     secret: mysecret
