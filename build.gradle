@@ -4,8 +4,8 @@ plugins {
     id 'java'
 }
 
-group = 'com.warmup'
-version = '0.1'
+group = 'com.warmup.familytalk'
+version = '0.0.1'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -30,7 +30,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.9'
 
     runtimeOnly 'com.h2database:h2'
-    compileOnly 'org.projectlombok:lombok'
+    compile 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 
