@@ -19,7 +19,7 @@ class HealthControllerTest {
     private WebTestClient webClient;
 
     @Test
-    void test(){
+    void test() {
         webClient.get()
                 .uri("/health")
                 .exchange()

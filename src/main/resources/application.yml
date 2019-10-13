@@ -9,7 +9,31 @@ spring:
       hibernate:
         format_sql: true
 
+management:
+  server:
+    port: 443
+    ssl:
+      enabled: true
+      key-store: team7keystore.p12
+      key-store-password: teamteam7
+      trust-store: team7keystore.jks
+      trust-store-password: teamteam7
+      key-store-type: PKCS12
+      key-alias: bns-ssl
+
+
+password:
+  encoder:
+    secret: mysecret
+    iteration: 33
+    keylength: 256
+
+jjwt:
+  secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
+  expiration: 28800
+
 ---
+
 spring:
   profiles: dev
   datasource:
@@ -29,9 +53,27 @@ spring:
           use_jdbc_metadata_defaults: false
 
 ---
+
 spring:
   profiles: local
 
   jpa:
     hibernate:
       ddl-auto: create-drop
+
+---
+
+spring:
+  profiles: test
+  main:
+    web-application-type: reactive
+
+password:
+  encoder:
+    secret: mysecret
+    iteration: 33
+    keylength: 256
+
+jjwt:
+  secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
+  expiration: 28800
