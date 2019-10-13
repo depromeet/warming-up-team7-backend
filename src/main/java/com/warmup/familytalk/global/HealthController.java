@@ -15,4 +15,10 @@ public class HealthController {
     public ResponseEntity health(){
         return ResponseEntity.ok(SUCCESS_MESSAGE);
     }
+
+
+    @GetMapping
+    public ResponseEntity health2(){
+        return ResponseEntity.ok("hello world!");
+    }
 }
