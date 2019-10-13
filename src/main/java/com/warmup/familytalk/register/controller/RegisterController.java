@@ -27,7 +27,6 @@ public final class RegisterController {
     public final Mono<ResponseEntity<Auth.Response>> login(final Loggable loggable,
                                                            @RequestBody final Auth.Request authRequest) {
 
-        log.debug("{}> start login", loggable);
         return userService.findByUsername(authRequest.getUsername())
                           .filterWhen(user -> passwordService.matches(authRequest, user))
                           .flatMap(jwtService::generate)
