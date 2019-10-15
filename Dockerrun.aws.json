@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": 1,
   "Image": {
-    "Name": "szantopeter/eb-spring-boot-demo",
+    "Name": "team7/eb-spring-boot",
     "Update": "true"
   },
   "Ports": [
