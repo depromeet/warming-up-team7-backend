@@ -11,7 +11,7 @@ public class HealthController {
 
     static final String SUCCESS_MESSAGE = "SUCCESS";
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity health(){
         return ResponseEntity.ok(SUCCESS_MESSAGE);
     }
