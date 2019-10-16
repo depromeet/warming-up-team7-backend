@@ -1,0 +1,44 @@
+version: 0.2
+
+  #env:
+  #variables:
+  # key: "value"
+  # key: "value"
+  #parameter-store:
+  # key: "value"
+  # key: "value"
+#git-credential-helper: yes
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk8
+      #commands:
+      # - command
+      # - command
+      #pre_build:
+      #commands:
+      # - command
+      # - command
+  build:
+    commands:
+      - gradle clean
+      - gradle bootJar
+      #post_build:
+      #commands:
+      # - command
+      # - command
+artifacts:
+  files:
+    - Dockerfile
+    - build/libs/familytalk-0.0.1.jar
+    - .ebextensions/**/*
+
+    #cache:
+    #paths:
+    # - paths
+eb_codebuild_settings:
+  CodeBuildServiceRole: arn:aws:iam::936701173831:role/service-role/codebuild-team7wp-service-role
+  ComputeType: BUILD_GENERAL1_SMALL
+  Image: aws/codebuild/standard:2.0
+  Timeout: 60
