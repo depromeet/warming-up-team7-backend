@@ -12,9 +12,9 @@ phases:
       -
 artifacts:
   files:
-    - 'Dockerfile'
-    - 'build/libs/familytalk-0.0.1.jar'
-    - '.ebextensions/**/*'
+    - Dockerfile
+    - build/libs/familytalk-0.0.1.jar
+    - .ebextensions/**/*
 
 eb_codebuild_settings:
   CodeBuildServiceRole: arn:aws:iam::936701173831:role/service-role/codebuild-team7wp-service-role
