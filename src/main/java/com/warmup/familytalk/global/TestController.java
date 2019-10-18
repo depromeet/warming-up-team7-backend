@@ -6,20 +6,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/health")
-public class HealthController {
-
-    static final String SUCCESS_MESSAGE = "SUCCESS";
+@RequestMapping("/test")
+public class TestController {
 
     @GetMapping
-    public ResponseEntity health(){
-        return ResponseEntity.ok(SUCCESS_MESSAGE);
+    public ResponseEntity hi() {
+        return ResponseEntity.ok("hi");
     }
 
-
-    @GetMapping("/123")
-    public ResponseEntity health2(){
-        return ResponseEntity.ok("hello world22!");
+    @GetMapping("/hello")
+    public ResponseEntity hello() {
+        return ResponseEntity.ok("hello");
     }
-
 }

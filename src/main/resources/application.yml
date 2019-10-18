@@ -9,7 +9,18 @@ spring:
       hibernate:
         format_sql: true
 
+password:
+  encoder:
+    secret: mysecret
+    iteration: 33
+    keylength: 256
+
+jjwt:
+  secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
+  expiration: 28800
+
 ---
+
 spring:
   profiles: dev
   datasource:
@@ -29,9 +40,27 @@ spring:
           use_jdbc_metadata_defaults: false
 
 ---
+
 spring:
   profiles: local
 
   jpa:
     hibernate:
       ddl-auto: create-drop
+
+---
+
+spring:
+  profiles: test
+  main:
+    web-application-type: reactive
+
+password:
+  encoder:
+    secret: mysecret
+    iteration: 33
+    keylength: 256
+
+jjwt:
+  secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
+  expiration: 28800

@@ -2,8 +2,41 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+            <Pattern>%X{LOGGABLE_TIME_WATCH}%d{HH:mm:ss.SSS}> [%thread] %-5level %logger{36} - %msg%n</Pattern>
         </layout>
+
+        <target>System.out</target>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>DENY</onMatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+        </filter>
+    </appender>
+
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%X{LOGGABLE_TIME_WATCH}%d{HH:mm:ss.SSS}> [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+
+        <target>System.err</target>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
     </appender>
 
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -25,6 +58,12 @@
         <appender-ref ref="STDOUT"/>
     </appender>
 
+    <appender name="ASYNC_STDERR" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>500</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="STDERR"/>
+    </appender>
+
     <appender name="ASYNC_ROLLING" class="ch.qos.logback.classic.AsyncAppender">
         <queueSize>500</queueSize>
         <discardingThreshold>0</discardingThreshold>
@@ -40,6 +79,7 @@
 
         <root level="INFO">
             <appender-ref ref="ASYNC_STDOUT"/>
+            <appender-ref ref="ASYNC_STDERR"/>
             <appender-ref ref="ASYNC_ROLLING"/>
         </root>
     </springProfile>
@@ -47,6 +87,7 @@
     <springProfile name="dev">
         <root level="INFO">
             <appender-ref ref="ASYNC_STDOUT"/>
+            <appender-ref ref="ASYNC_STDERR"/>
             <appender-ref ref="ASYNC_ROLLING"/>
         </root>
     </springProfile>
