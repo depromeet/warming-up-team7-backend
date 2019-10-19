@@ -2,8 +2,9 @@ version: 0.2
 
 phases:
   pre_build:
-    - echo [PHASE] Entered the pre_build phase...
-    - chmod +x ./gradlew
+    commands:
+      - echo [PHASE] Entered the pre_build phase...
+      - chmod +x ./gradlew
 
   build:
     commands:
