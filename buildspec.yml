@@ -7,16 +7,11 @@ phases:
     commands:
       - echo [PHASE] Entered the install phase...
 
-  pre_build:
-    commands:
-      - echo [PHASE] Entered the pre_build phase...
-      - chmod +x ./gradlew
-
   build:
     commands:
       - echo [PHASE] Entered the build phase...
-      - ./gradlew clean
-      - ./gradlew bootJar
+      - gradle clean
+      - gradle bootJar
 
 artifacts:
   name: wp-famillytalk-$(date +%Y-%m-%d-%H:%m:%S)
