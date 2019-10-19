@@ -1,23 +1,22 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      java: openjdk8
+  pre_build:
+    - echo [PHASE] Entered the pre_build phase...
+    - chmod +x ./gradlew
 
   build:
     commands:
-      - gradle clean
-      - gradle bootJar
-      -
-artifacts:
-  files:
-    - Dockerfile
-    - build/libs/familytalk-0.0.1.jar
-    - .ebextensions/**/*
+      - ./gradlew clean
+      - ./gradlew bootJar
 
-eb_codebuild_settings:
-  CodeBuildServiceRole: arn:aws:iam::936701173831:role/service-role/codebuild-team7wp-service-role
-  ComputeType: BUILD_GENERAL1_SMALL
-  Image: aws/codebuild/standard:2.0
-  Timeout: 60
+artifacts:
+  name: wp-famillytalk-$(date +%Y-%m-%d-%H:%m:%S)
+  files:
+    - appspec.yml
+    - Dockerfile
+    - build/libs/*.jar
+
+cache:
+  paths:
+    - '/root/.gradle/caches/**/*'
