@@ -11,7 +11,7 @@ phases:
     commands:
       - echo [PHASE] Entered the build phase...
       - gradle clean
-      - gradle bootJar
+      - gradle bootJar -Pprofile=prod
 
 artifacts:
   name: wp-famillytalk-$(date +%Y-%m-%d-%H:%m:%S)
