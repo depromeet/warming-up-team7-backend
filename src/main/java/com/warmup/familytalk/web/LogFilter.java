@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 import static com.warmup.familytalk.common.LogHelper.CONTEXT_KEY;
-import static com.warmup.familytalk.common.LogHelper.createLogContext;
 import static com.warmup.familytalk.common.LogHelper.logOnError;
 import static com.warmup.familytalk.common.LogHelper.logOnNext;
 
@@ -29,9 +28,10 @@ public class LogFilter implements WebFilter {
         exchange.getAttributes()
                 .put(CONTEXT_KEY, timeWatch);
 
-        return chain.filter(exchange)
-                    .subscriberContext(createLogContext(timeWatch))
-                    .doOnEach(logOnNext(o -> log.info("done")))
-                    .doOnEach(logOnError(o -> log.error("error")));
+        return Mono.empty()
+                   .doOnEach(logOnNext(o -> log.info("request header:[{}]", exchange.getRequest().getHeaders())))
+                   .then(chain.filter(exchange)
+                              .doOnEach(logOnNext(o -> log.info("done")))
+                              .doOnEach(logOnError(o -> log.error("error done"))));
     }
 }

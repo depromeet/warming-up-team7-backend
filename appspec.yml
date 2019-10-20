@@ -2,22 +2,22 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/build/
+    destination: /home/ubuntu/deploy/current
 
-#hooks:
-#  BeforeInstall:
-#    - location: scripts/UnzipResourceBundle.sh
-#    - location: scripts/UnzipDataBundle.sh
-#  AfterInstall:
-#    - location: scripts/RunResourceTests.sh
-#      timeout: 180
-#  ApplicationStart:
-#    - location: scripts/RunFunctionalTests.sh
-#      timeout: 3600
-#  ValidateService:
-#    - location: scripts/MonitorService.sh
-#      timeout: 3600
-#      runas: codedeployuser
+hooks:
+  ApplicationStop:
+    - location: /home/ubuntu/scripts/stop_docker_container.sh
+  BeforeInstall:
+    - location: /home/ubuntu/scripts/backup_artifacts.sh
+  AfterInstall:
+    - location: /home/ubuntu/scripts/create_new_docker_container.sh
+      timeout: 180
+  ApplicationStart:
+    - location: /home/ubuntu/scripts/run_docker_container.sh
+      timeout: 180
+  ValidateService:
+    - location: /home/ubuntu/scripts/health_check.sh
+      timeout: 180
 
 permissions:
   - object: /

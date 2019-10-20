@@ -34,7 +34,7 @@ public class TimeWatch implements Loggable {
     }
 
     public String getDebugId() {
-        return String.format("%s-%s", randomKey, requestId);
+        return String.format("%s%s", randomKey, requestId);
     }
 
     public LocalDateTime getCurrentLocalDateTime() {
@@ -47,14 +47,10 @@ public class TimeWatch implements Loggable {
 
     @Override
     public String toString() {
-        return String.format("[%s|%ss]%s-%s",
+        return String.format("[%s|%ss]%s%s",
                              getCurrentLocalDateTime().format(DateTimeFormatter.ofPattern("yyMMdd'T'HH:mm:ss:SSS")),
                              (double) Duration.between(startedAt, getCurrentLocalDateTime())
                                               .get(ChronoUnit.NANOS) / 1_000_000_000,
                              randomKey, requestId);
-    }
-
-    public String toStringWhenError() {
-        return toString() + " @@@@@";
     }
 }
