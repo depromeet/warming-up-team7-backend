@@ -51,7 +51,7 @@ spring:
   profiles: prod
 
 logging:
-  path: /home/depromeet7/logs
+  path: /Users/user/logs
 
 ---
 

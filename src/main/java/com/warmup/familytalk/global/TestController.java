@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.warmup.familytalk.common.LoggingUtils.logging;
+import static com.warmup.familytalk.common.LoggingUtils.dumpThrowable;
 
 @Slf4j
 @RestController
@@ -36,7 +36,7 @@ public class TestController {
 
     @GetMapping("/file")
     public Mono<ResponseEntity<String>> file(final Trace trace) {
-        return Flux.fromStream(() -> getTestFileStream(trace, "/hello.txt"))
+        return Flux.fromStream(() -> getTestFileStream(trace, "/hello1.txt"))
                    .reduce(StringUtils.EMPTY, (a, b) -> a + b)
                    .map(ResponseEntity::ok)
                    .onErrorReturn(ResponseEntity.badRequest().build());
@@ -48,9 +48,8 @@ public class TestController {
                                                             Charsets.UTF_8))
                     .lines();
         } catch (IOException e) {
-            logging(trace, () -> log.error("file not found123123123:[{}], e:[{}]", location, e.toString()));
-
-            throw new RuntimeException(e);
+            dumpThrowable(trace, e);
+            return Stream.empty();
         }
     }
 }

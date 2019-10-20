@@ -29,6 +29,24 @@ public final class LoggingUtils {
         }
     }
 
+    public static void dumpThrowable(final Trace trace, final Throwable e) {
+        logging(trace, () -> log.error("{}", e.toString()));
+        logging(trace, () -> log.error("{}", formatThrowable(trace, e)));
+    }
+
+    public static String formatThrowable(final Trace trace, final Throwable e) {
+        final StackTraceElement[] stack = e.getStackTrace();
+        final StringBuilder sb = new StringBuilder(256);
+        for (StackTraceElement s : stack) {
+            sb.append("@@@@@ ")
+              .append(trace.getDebugId())
+              .append("> ")
+              .append(s.toString())
+              .append("\n");
+        }
+        return sb.toString();
+    }
+
     public static <T> Consumer<Signal<T>> logOnNext(final Consumer<T> logStatement) {
         return signal -> {
             if (!(signal.isOnNext() || signal.isOnComplete())) return;
