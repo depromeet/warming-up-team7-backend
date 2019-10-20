@@ -3,6 +3,8 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/deploy/current
+  - source: scripts
+    destination: /home/ubuntu/scripts
 
 hooks:
   ApplicationStop:
