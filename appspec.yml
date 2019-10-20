@@ -6,17 +6,17 @@ files:
 
 hooks:
   ApplicationStop:
-    - location: /home/ubuntu/scripts/stop_docker_container.sh
+    - location: scripts/stop_docker_container.sh
   BeforeInstall:
-    - location: /home/ubuntu/scripts/backup_artifacts.sh
+    - location: scripts/backup_artifacts.sh
   AfterInstall:
-    - location: /home/ubuntu/scripts/create_new_docker_container.sh
+    - location: scripts/create_new_docker_container.sh
       timeout: 180
   ApplicationStart:
-    - location: /home/ubuntu/scripts/run_docker_container.sh
+    - location: scripts/run_docker_container.sh
       timeout: 180
   ValidateService:
-    - location: /home/ubuntu/scripts/health_check.sh
+    - location: scripts/health_check.sh
       timeout: 180
 
 permissions:
