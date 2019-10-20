@@ -11,21 +11,32 @@ import reactor.core.publisher.Signal;
 import reactor.util.context.Context;
 
 @Slf4j
-public final class LogHelper {
+public final class LoggingUtils {
     public static final String CONTEXT_KEY = "LOGGABLE_TIME_WATCH";
 
-    public static Context createLogContext(final TimeWatch timeWatch) {
-        return Context.of(CONTEXT_KEY, timeWatch);
+    @FunctionalInterface
+    public interface Log {
+        void write();
+    }
+
+    public static Context createLogContext(final Trace trace) {
+        return Context.of(CONTEXT_KEY, trace);
+    }
+
+    public static void logging(final Trace trace, final Log logStatement) {
+        try (MDC.MDCCloseable closeable = MDC.putCloseable(CONTEXT_KEY, trace.toString())) {
+            logStatement.write();
+        }
     }
 
     public static <T> Consumer<Signal<T>> logOnNext(final Consumer<T> logStatement) {
         return signal -> {
             if (!(signal.isOnNext() || signal.isOnComplete())) return;
 
-            final TimeWatch runningTimeWatch = signal.getContext()
-                                                     .get(ServerWebExchange.class)
-                                                     .getRequiredAttribute(CONTEXT_KEY);
-            try (MDC.MDCCloseable closeable = MDC.putCloseable(CONTEXT_KEY, runningTimeWatch.toString())) {
+            final Trace runningTrace = signal.getContext()
+                                             .get(ServerWebExchange.class)
+                                             .getRequiredAttribute(CONTEXT_KEY);
+            try (MDC.MDCCloseable closeable = MDC.putCloseable(CONTEXT_KEY, runningTrace.toString())) {
                 logStatement.accept(signal.get());
             }
         };
@@ -35,10 +46,10 @@ public final class LogHelper {
         return signal -> {
             if (!signal.isOnError()) return;
 
-            final TimeWatch runningTimeWatch = signal.getContext()
-                                                     .get(ServerWebExchange.class)
-                                                     .getRequiredAttribute(CONTEXT_KEY);
-            try (MDC.MDCCloseable closeable = MDC.putCloseable(CONTEXT_KEY, runningTimeWatch.toString())) {
+            final Trace runningTrace = signal.getContext()
+                                             .get(ServerWebExchange.class)
+                                             .getRequiredAttribute(CONTEXT_KEY);
+            try (MDC.MDCCloseable closeable = MDC.putCloseable(CONTEXT_KEY, runningTrace.toString())) {
                 logStatement.accept(signal.getThrowable());
             }
         };

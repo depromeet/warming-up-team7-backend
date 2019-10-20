@@ -8,8 +8,8 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
 import org.springframework.web.server.ServerWebExchange;
-import com.warmup.familytalk.common.LogHelper;
-import com.warmup.familytalk.common.Loggable;
+import com.warmup.familytalk.common.LoggingUtils;
+import com.warmup.familytalk.common.Trace;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -30,14 +30,14 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
     private static final class LoggableArgumentResolver implements HandlerMethodArgumentResolver {
         @Override
         public boolean supportsParameter(final MethodParameter parameter) {
-            return Loggable.class.isAssignableFrom(parameter.getParameterType());
+            return Trace.class.isAssignableFrom(parameter.getParameterType());
         }
 
         @Override
         public Mono<Object> resolveArgument(final MethodParameter parameter,
                                             final BindingContext bindingContext,
                                             final ServerWebExchange exchange) {
-            return Mono.just(exchange.getAttributes().get(LogHelper.CONTEXT_KEY));
+            return Mono.just(exchange.getAttributes().get(LoggingUtils.CONTEXT_KEY));
         }
     }
 }

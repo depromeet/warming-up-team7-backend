@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class TimeWatch implements Loggable {
+public class Trace {
 
     private final String requestId;
     private final StopWatch stopWatch = new StopWatch();
@@ -22,15 +22,15 @@ public class TimeWatch implements Loggable {
     private final LocalDateTime startedAt = LocalDateTime.now(ZoneOffset.UTC);
     private final String randomKey = RandomStringUtils.randomAlphanumeric(10);
 
-    public static TimeWatch createStarted(String requestId) {
-        final TimeWatch timeWatch = new TimeWatch(requestId);
-        timeWatch.stopWatch.start();
+    public static Trace createStarted(String requestId) {
+        final Trace trace = new Trace(requestId);
+        trace.stopWatch.start();
 
-        return timeWatch;
+        return trace;
     }
 
-    public static TimeWatch createWhenHasNoRequestID() {
-        return new TimeWatch("NO-REQUEST-ID");
+    public static Trace createWhenHasNoRequestID() {
+        return new Trace("NO-REQUEST-ID");
     }
 
     public String getDebugId() {
