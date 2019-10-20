@@ -5,7 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.warmup.familytalk.common.Loggable;
+import com.warmup.familytalk.common.Trace;
 import com.warmup.familytalk.register.model.Message;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -23,8 +23,8 @@ public class ResourceController {
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public Mono<ResponseEntity<?>> admin(Loggable loggable) {
-        log.debug("{} - ???????1234", loggable);
+    public Mono<ResponseEntity<?>> admin(Trace trace) {
+        log.debug("{} - ???????1234", trace);
         return Mono.just(ResponseEntity.ok(new Message("Content for admin")));
     }
 

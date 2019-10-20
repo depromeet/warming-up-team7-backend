@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.warmup.familytalk.auth.service.PasswordService;
-import com.warmup.familytalk.common.Loggable;
+import com.warmup.familytalk.common.Trace;
 import com.warmup.familytalk.register.model.Auth;
 import com.warmup.familytalk.register.service.JwtService;
 import com.warmup.familytalk.register.service.UserService;
@@ -24,7 +24,7 @@ public final class RegisterController {
     private final PasswordService passwordService;
 
     @PostMapping("/login")
-    public final Mono<ResponseEntity<Auth.Response>> login(final Loggable loggable,
+    public final Mono<ResponseEntity<Auth.Response>> login(final Trace trace,
                                                            @RequestBody final Auth.Request authRequest) {
 
         return userService.findByUsername(authRequest.getUsername())
