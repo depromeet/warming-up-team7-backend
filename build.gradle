@@ -55,12 +55,24 @@ ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
 
 bootRun {
     bootRun.systemProperty 'spring.profiles.active', profile
+
+    println "resource profile:${profile}"
+    sourceSets {
+        main {
+            resources {
+                srcDirs "src/main/resources", "src/main/resources-${profile}"
+            }
+        }
+    }
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs "src/main/resources", "src/main/resources-${profile}"
+bootJar {
+    println "resource profile:${profile}"
+    sourceSets {
+        main {
+            resources {
+                srcDirs "src/main/resources", "src/main/resources-${profile}"
+            }
         }
     }
 }
