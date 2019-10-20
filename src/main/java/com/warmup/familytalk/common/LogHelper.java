@@ -1,40 +1,54 @@
 package com.warmup.familytalk.common;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.web.server.ServerWebExchange;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import reactor.core.publisher.Signal;
 import reactor.util.context.Context;
 
-public class LogHelper {
+@Slf4j
+public final class LogHelper {
     public static final String CONTEXT_KEY = "LOGGABLE_TIME_WATCH";
 
-    public static Context createLogContext(TimeWatch timeWatch) {
+    public static Context createLogContext(final TimeWatch timeWatch) {
         return Context.of(CONTEXT_KEY, timeWatch);
     }
 
-    public static <T> Consumer<Signal<T>> logOnNext(Consumer<T> logStatement) {
+    public static <T> Consumer<Signal<T>> logOnNext(final Consumer<T> logStatement) {
         return signal -> {
-            if (!signal.isOnNext()) return;
+            if (!(signal.isOnNext() || signal.isOnComplete())) return;
 
-            final Optional<TimeWatch> runningTimeWatch = signal.getContext().getOrEmpty(CONTEXT_KEY);
-            final TimeWatch timeWatch = runningTimeWatch.orElseGet(TimeWatch::createWhenHasNoRequestID);
-            try (MDC.MDCCloseable closeable = MDC.putCloseable(CONTEXT_KEY, timeWatch.toString())) {
+            final TimeWatch runningTimeWatch = signal.getContext()
+                                                     .get(ServerWebExchange.class)
+                                                     .getRequiredAttribute(CONTEXT_KEY);
+            try (MDC.MDCCloseable closeable = MDC.putCloseable(CONTEXT_KEY, runningTimeWatch.toString())) {
                 logStatement.accept(signal.get());
             }
         };
     }
 
-    public static <T> Consumer<Signal<T>> logOnError(Consumer<Throwable> logStatement) {
+    public static <T> Consumer<Signal<T>> logOnError(final Consumer<Throwable> logStatement) {
         return signal -> {
             if (!signal.isOnError()) return;
 
-            final Optional<TimeWatch> runningTimeWatch = signal.getContext().getOrEmpty(CONTEXT_KEY);
-            final TimeWatch timeWatch = runningTimeWatch.orElseGet(TimeWatch::createWhenHasNoRequestID);
-            try (MDC.MDCCloseable closeable = MDC.putCloseable(CONTEXT_KEY, timeWatch.toStringWhenError())) {
+            final TimeWatch runningTimeWatch = signal.getContext()
+                                                     .get(ServerWebExchange.class)
+                                                     .getRequiredAttribute(CONTEXT_KEY);
+            try (MDC.MDCCloseable closeable = MDC.putCloseable(CONTEXT_KEY, runningTimeWatch.toString())) {
                 logStatement.accept(signal.getThrowable());
             }
         };
+    }
+
+    public static String dumpRequest(final ServerHttpRequest request) {
+        return request.toString();
+    }
+
+    public static String dumpResponse(final ServerHttpResponse response) {
+        return response.toString();
     }
 }

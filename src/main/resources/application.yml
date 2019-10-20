@@ -2,13 +2,6 @@ spring:
   profiles:
     active: local
 
-  jpa:
-    show-sql: true
-    open-in-view: false
-    properties:
-      hibernate:
-        format_sql: true
-
 password:
   encoder:
     secret: mysecret
@@ -19,14 +12,27 @@ jjwt:
   secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
   expiration: 28800
 
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+logging:
+  level:
+    .: error
+    org.springframework: ERROR
+    com.warmup.familytalk: INFO
+
 ---
 
 spring:
   profiles: dev
+
   datasource:
     url: jdbc:postgresql://localhost:5432/familytalk
     username: depromeet
     password: pass
+
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -42,25 +48,12 @@ spring:
 ---
 
 spring:
-  profiles: local
+  profiles: prod
 
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
+logging:
+  path: /home/depromeet7/logs
 
 ---
 
 spring:
   profiles: test
-  main:
-    web-application-type: reactive
-
-password:
-  encoder:
-    secret: mysecret
-    iteration: 33
-    keylength: 256
-
-jjwt:
-  secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
-  expiration: 28800

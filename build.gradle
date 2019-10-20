@@ -1,12 +1,14 @@
 plugins {
     id 'org.springframework.boot' version '2.1.9.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'idea'
     id 'java'
 }
 
 group = 'com.warmup.familytalk'
 version = '0.0.1'
-sourceCompatibility = '1.8'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 configurations {
     compileOnly {
@@ -46,5 +48,19 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'junit'
+    }
+}
+
+ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
+
+bootRun {
+    bootRun.systemProperty 'spring.profiles.active', profile
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/resources", "src/main/resources-${profile}"
+        }
     }
 }
