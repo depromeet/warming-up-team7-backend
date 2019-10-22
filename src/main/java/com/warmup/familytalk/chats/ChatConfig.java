@@ -15,7 +15,7 @@ import java.util.Map;
 @Configuration
 public class ChatConfig {
 
-    static final String CHAT_URI = "/chat/room/";
+    public static final String CHAT_URI = "/chat/room/";
 
     @Bean
     public HandlerMapping webSocketMapping() {
