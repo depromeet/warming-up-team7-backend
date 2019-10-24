@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class RoomsService {
+public class RoomService {
 
     private final RoomRepository roomRepository;
 
@@ -14,9 +14,8 @@ public class RoomsService {
         return roomRepository.save(room);
     }
 
-    // 방 생성
-
     // 방 조회 (in: userById, out: Optional<Room>
+
 
     // 방 삭제
 }

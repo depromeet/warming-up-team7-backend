@@ -51,20 +51,19 @@ public class ChatSocketHandler implements WebSocketHandler {
                 .getPath()
                 .replace(CHAT_URI, Strings.EMPTY));
     }
- 
+
     private ChatMessage toChatMessage(String json) {
         try {
-            ChatMessage chatMessage = mapper.readValue(json, ChatMessage.class);
-            return chatMessage;
+            return mapper.readValue(json, ChatMessage.class);
         } catch (IOException e) {
-            throw new RuntimeException("Invalid JSON:" + json, e);
+            throw new RuntimeException("Invalid JSON:" + json);
         }
     }
 
     private String toJSON(ChatMessage chatMessage) {
         try {
             return mapper.writeValueAsString(chatMessage);
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

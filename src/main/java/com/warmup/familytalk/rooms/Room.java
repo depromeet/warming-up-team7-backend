@@ -31,7 +31,7 @@ public class Room {
         this.updateDate = updateDate;
     }
 
-    void create() {
+    void populate() {
         id = ID.incrementAndGet();
         createDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();

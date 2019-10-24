@@ -22,15 +22,8 @@ public class JwtService implements Serializable {
     private static final ZoneOffset DEFAULT_TIMEZONE_OFFSET = ZoneOffset.UTC;
     private static final SignatureAlgorithm DEFAULT_SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
-    private final String secret;
-    private final String expirationTimeInMilliSecond;
-
-    @Autowired
-    public JwtService(@Value("${jjwt.secret}") final String secret,
-                      @Value("${jjwt.expiration}") final String expirationTimeInMilliSecond) {
-        this.secret = secret;
-        this.expirationTimeInMilliSecond = expirationTimeInMilliSecond;
-    }
+    private final String secret = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize";
+    private final String expirationTimeInMilliSecond = "28800";
 
     public Mono<JwtToken> parse(String token) {
         try {

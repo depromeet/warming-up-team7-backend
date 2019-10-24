@@ -1,3 +1,4 @@
+/*
 package com.warmup.familytalk.register.controller;
 
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,9 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public final class RegisterController {
 
-    private final JwtService jwtService;
-    private final UserService userService;
-    private final PasswordService passwordService;
+//    private final JwtService jwtService;
+//    private final UserService userService;
+//    private final PasswordService passwordService;
 
     @PostMapping("/login")
     public final Mono<ResponseEntity<Auth.Response>> login(final Trace trace,
@@ -43,3 +44,4 @@ public final class RegisterController {
     }
 }
 
+*/

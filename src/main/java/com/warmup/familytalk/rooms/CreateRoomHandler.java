@@ -19,12 +19,12 @@ import static com.warmup.familytalk.chats.ChatConfig.CHAT_URI;
 @RequiredArgsConstructor
 public class CreateRoomHandler implements Handler {
 
-    private final RoomsService roomsService;
+    private final RoomService roomService;
 
     @Override
     public Mono<ServerResponse> handle(ServerRequest request) {
         Mono<Room> room = request.bodyToMono(RoomCreateRequest.class)
-                .flatMap(it -> roomsService.create(it.toEntity()));
+                .flatMap(it -> roomService.create(it.toEntity()));
         return writeResponse(room);
     }
 

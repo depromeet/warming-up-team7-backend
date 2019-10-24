@@ -12,25 +12,25 @@ import lombok.*;
 class ChatMessage {
 
     private Long roomId;
-    private Type type;
+    private EventType eventType;
     private Sender sender;
     private MessageType messageType;
-    private String message;
+    private String contents;
 
     @JsonCreator
     static ChatMessage create(
             @JsonProperty("messageType") MessageType messageType,
-            @JsonProperty("message") String message,
+            @JsonProperty("contents") String message,
             @JsonProperty("sender") Sender sender) {
-        return new ChatMessage(0l, Type.TALK, sender, messageType, message);
+        return new ChatMessage(0L, EventType.TALK, sender, messageType, message);
     }
 
     // todo : Request -> token payload
     static ChatMessage join(User user) {
         return ChatMessage.builder()
-                .type(Type.ENTER)
+                .eventType(EventType.ENTER)
                 .messageType(MessageType.TEXT)
-                .message("User join")
+                .contents("User join")
                 .sender(new Sender(0l, user.getUsername()))
                 .build();
     }
@@ -40,7 +40,7 @@ class ChatMessage {
         IMAGE, TEXT
     }
 
-    enum Type {
+    enum EventType {
 
         ENTER, TALK
     }
