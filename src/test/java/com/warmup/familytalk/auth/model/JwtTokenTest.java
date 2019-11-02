@@ -1,8 +1,6 @@
-package com.warmup.familytalk.register.model;
+package com.warmup.familytalk.auth.model;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class JwtTokenTest {
 

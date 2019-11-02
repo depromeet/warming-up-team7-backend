@@ -1,4 +1,4 @@
-package com.warmup.familytalk.register.model;
+package com.warmup.familytalk.auth.model;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 @EqualsAndHashCode(of = {"userId", "username"})
 public class User implements UserDetails, PasswordAware {
 
+    @Getter
     private long userId;
     private String username;
     private String password;

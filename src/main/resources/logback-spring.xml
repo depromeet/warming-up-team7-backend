@@ -55,8 +55,6 @@
 
         <root level="INFO">
             <appender-ref ref="ASYNC_STDOUT"/>
-            <appender-ref ref="ASYNC_STDERR"/>
-            <appender-ref ref="ASYNC_ROLLING"/>
         </root>
     </springProfile>
 </configuration>

@@ -1,10 +1,10 @@
-package com.warmup.familytalk.register.service;
+package com.warmup.familytalk.auth.service;
 
 import java.util.Arrays;
 
 import org.springframework.stereotype.Service;
-import com.warmup.familytalk.register.model.Role;
-import com.warmup.familytalk.register.model.User;
+import com.warmup.familytalk.auth.model.Role;
+import com.warmup.familytalk.auth.model.User;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

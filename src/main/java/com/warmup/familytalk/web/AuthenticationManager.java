@@ -7,8 +7,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import com.warmup.familytalk.register.model.JwtToken;
-import com.warmup.familytalk.register.service.JwtService;
+import com.warmup.familytalk.auth.model.JwtToken;
+import com.warmup.familytalk.auth.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;

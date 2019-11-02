@@ -1,4 +1,4 @@
-package com.warmup.familytalk.register.model;
+package com.warmup.familytalk.auth.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

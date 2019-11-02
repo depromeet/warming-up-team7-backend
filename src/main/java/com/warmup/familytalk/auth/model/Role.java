@@ -1,4 +1,4 @@
-package com.warmup.familytalk.register.model;
+package com.warmup.familytalk.auth.model;
 
 public enum Role {
     ROLE_USER, ROLE_ADMIN, ROLE_TEST

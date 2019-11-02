@@ -1,4 +1,4 @@
-package com.warmup.familytalk.register.service;
+package com.warmup.familytalk.auth.service;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -8,8 +8,8 @@ import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.warmup.familytalk.register.model.JwtToken;
-import com.warmup.familytalk.register.model.User;
+import com.warmup.familytalk.auth.model.JwtToken;
+import com.warmup.familytalk.auth.model.User;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -48,13 +48,12 @@ public class JwtService implements Serializable {
 
         try {
             return Mono.just(JwtToken.builder()
-                                     .withUserId(Long.parseLong(user.getUsername()))
+                                     .withUserId(user.getUserId())
                                      .withSecret(secret)
                                      .withCreatedAt(createdAt)
                                      .withExpiredAt(expiredAt)
                                      .withSignatureAlgorithm(DEFAULT_SIGNATURE_ALGORITHM)
                                      .build());
-
         } catch (Exception e) {
             return Mono.error(e);
         }
