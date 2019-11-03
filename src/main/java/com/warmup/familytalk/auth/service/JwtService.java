@@ -53,6 +53,7 @@ public class JwtService implements Serializable {
                                      .withCreatedAt(createdAt)
                                      .withExpiredAt(expiredAt)
                                      .withSignatureAlgorithm(DEFAULT_SIGNATURE_ALGORITHM)
+                                     .withRole(user.getRole())
                                      .build());
         } catch (Exception e) {
             return Mono.error(e);

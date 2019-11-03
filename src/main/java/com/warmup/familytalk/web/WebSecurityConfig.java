@@ -36,6 +36,7 @@ public class WebSecurityConfig {
                 .pathMatchers("/l7_health_check").permitAll()
                 .pathMatchers("/test/**").permitAll()
                 .pathMatchers("/login").permitAll()
+                .pathMatchers("/register").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }

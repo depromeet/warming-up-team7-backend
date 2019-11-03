@@ -10,7 +10,7 @@ password:
 
 jjwt:
   secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
-  expiration: 28800
+  expiration: 288000000
 
 server:
   error:

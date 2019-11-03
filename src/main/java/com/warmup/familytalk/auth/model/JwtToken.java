@@ -2,14 +2,11 @@ package com.warmup.familytalk.auth.model;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -50,7 +47,7 @@ public class JwtToken {
                 .withUserId(Long.parseLong(jws.getBody().getSubject()))
                 .withCreatedAt(toLocalDateTime(jws.getBody().getIssuedAt()))
                 .withExpiredAt(toLocalDateTime(jws.getBody().getExpiration()))
-                .withRoles(Builder.getRoles(jws.getBody()))
+                .withRole(Builder.getRole(jws.getBody()))
                 .withSecret(secret)
                 .build();
     }
@@ -67,12 +64,8 @@ public class JwtToken {
         return userId;
     }
 
-    public Set<Role> getRoles() {
-        return Builder.getRoles(claims);
-    }
-
-    public boolean hasRole(Role role) {
-        return getRoles().contains(role);
+    public Role getRole() {
+        return Builder.getRole(claims);
     }
 
     public String toTokenString() {
@@ -103,7 +96,7 @@ public class JwtToken {
 
     public static final class Builder {
         private static final String ROLE_KEY = "role";
-        private static final Class<Set> ROLE_VALUE_TYPE = Set.class;
+        private static final Class<ArrayList> ROLE_VALUE_TYPE = ArrayList.class;
 
         private long userId;
         private Map<String, Object> claims = new HashMap<>();
@@ -140,13 +133,8 @@ public class JwtToken {
             return this;
         }
 
-        public Builder withRoles(Role... roles) {
-            withRoles(Arrays.asList(roles));
-            return this;
-        }
-
-        public Builder withRoles(Collection<Role> roles) {
-            claims.put(ROLE_KEY, Collections.unmodifiableCollection(roles));
+        public Builder withRole(Role role) {
+            claims.put(ROLE_KEY, role.name());
             return this;
         }
 
@@ -155,8 +143,8 @@ public class JwtToken {
         }
 
         @SuppressWarnings("unchecked")
-        private static Set<Role> getRoles(Map<String, Object> claims) {
-            return Collections.unmodifiableSet(ROLE_VALUE_TYPE.cast(claims.get(ROLE_KEY)));
+        private static Role getRole(Map<String, Object> claims) {
+            return Role.valueOf((String) claims.get(ROLE_KEY));
         }
     }
 }

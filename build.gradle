@@ -30,6 +30,8 @@ dependencies {
     compile 'org.postgresql:postgresql:42.2.8'
     compile 'com.google.guava:guava:28.1-jre'
     compile 'org.apache.commons:commons-lang3:3.9'
+    compile 'org.apache.commons:commons-csv:1.7'
+
 
     runtimeOnly 'com.h2database:h2'
     compile 'org.projectlombok:lombok'

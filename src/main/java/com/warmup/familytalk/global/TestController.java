@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.base.Charsets;
+import com.warmup.familytalk.auth.model.User;
 import com.warmup.familytalk.common.Trace;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,12 @@ public class TestController {
 
     @GetMapping("/hello")
     public ResponseEntity hello() {
+        return ResponseEntity.ok("hello");
+    }
+
+    @GetMapping("/withCredential")
+    public ResponseEntity withUserCredential(User user) {
+        System.out.println(user);
         return ResponseEntity.ok("hello");
     }
 

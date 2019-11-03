@@ -1,0 +1,3 @@
+userId,username ,password    ,enabled,roles
+0     ,testname ,testpassword,true   ,ROLE_USER
+1     ,testname1,testpassword,true   ,ROLE_USER

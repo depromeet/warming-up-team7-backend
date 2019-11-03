@@ -1,6 +1,6 @@
 package com.warmup.familytalk.web;
 
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,9 +32,6 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
         return new UsernamePasswordAuthenticationToken(
                 jwtToken.getUserId(),
                 null, // unused
-                jwtToken.getRoles().stream()
-                        .map(role -> new SimpleGrantedAuthority(role.name()))
-                        .collect(Collectors.toList())
-        );
+                Collections.singleton(new SimpleGrantedAuthority(jwtToken.getRole().name())));
     }
 }
