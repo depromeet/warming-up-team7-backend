@@ -12,6 +12,10 @@ jjwt:
   secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
   expiration: 288000000
 
+api:
+  news:
+    token: cad159957eba4f1da3adc1bbb21de063
+
 server:
   error:
     whitelabel:
@@ -23,6 +27,7 @@ logging:
     org.springframework: ERROR
     com.warmup.familytalk: INFO
 
+debug: true
 ---
 
 spring:

@@ -1,8 +1,8 @@
 package com.warmup.familytalk.web;
 
-import java.util.List;
-
 import org.springframework.core.MethodParameter;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.config.CorsRegistry;
@@ -14,6 +14,7 @@ import com.warmup.familytalk.auth.model.JwtToken;
 import com.warmup.familytalk.auth.model.User;
 import com.warmup.familytalk.auth.service.JwtService;
 import com.warmup.familytalk.auth.service.UserService;
+import com.warmup.familytalk.bot.service.NewsGeneratorService;
 import com.warmup.familytalk.common.LoggingUtils;
 import com.warmup.familytalk.common.Trace;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,12 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("*")
                 .allowedHeaders("*");
+    }
+
+    @Override
+    public void addFormatters(final FormatterRegistry registry) {
+        registry.addConverter(new NewsCountryEnumConverter());
+        registry.addConverter(new NewsCategoryEnumConverter());
     }
 
     @Override
@@ -71,6 +78,20 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
             return jwtService.parse(authorization)
                              .map(JwtToken::getUserId)
                              .flatMap(userService::findByUserId);
+        }
+    }
+
+    private static class NewsCategoryEnumConverter implements Converter<String, NewsGeneratorService.Category> {
+        @Override
+        public NewsGeneratorService.Category convert(String source) {
+            return NewsGeneratorService.Category.valueOf(source.toUpperCase());
+        }
+    }
+
+    private static class NewsCountryEnumConverter implements Converter<String, NewsGeneratorService.Country> {
+        @Override
+        public NewsGeneratorService.Country convert(String source) {
+            return NewsGeneratorService.Country.valueOf(source.toUpperCase());
         }
     }
 }

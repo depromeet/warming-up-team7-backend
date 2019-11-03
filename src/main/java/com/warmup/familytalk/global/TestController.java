@@ -9,10 +9,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.base.Charsets;
 import com.warmup.familytalk.auth.model.User;
+import com.warmup.familytalk.bot.model.BotNewsResponse;
+import com.warmup.familytalk.bot.service.NewsGeneratorService;
 import com.warmup.familytalk.common.Trace;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
@@ -23,7 +27,9 @@ import static com.warmup.familytalk.common.LoggingUtils.logging;
 @Slf4j
 @RestController
 @RequestMapping("/test")
+@RequiredArgsConstructor
 public class TestController {
+    private final NewsGeneratorService newsGeneratorService;
 
     @GetMapping
     public ResponseEntity hi() {
@@ -47,6 +53,13 @@ public class TestController {
                    .reduce(StringUtils.EMPTY, (a, b) -> a + b)
                    .map(ResponseEntity::ok)
                    .onErrorReturn(ResponseEntity.badRequest().build());
+    }
+
+    @GetMapping(value = "/news")
+    public Mono<ResponseEntity<BotNewsResponse>> news(@RequestParam(name = "country") final NewsGeneratorService.Country country,
+                                                      @RequestParam(name = "category") final NewsGeneratorService.Category category) {
+        return newsGeneratorService.fetchRandomNews(country, category)
+                                   .map(ResponseEntity::ok);
     }
 
     private Stream<String> getTestFileStream(final Trace trace, final String location) {
