@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import com.warmup.familytalk.register.model.JwtToken;
 import com.warmup.familytalk.register.model.User;
@@ -17,13 +18,21 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
+@Primary
 public class JwtService implements Serializable {
     private static final long serialVersionUID = 3830145016693475178L;
     private static final ZoneOffset DEFAULT_TIMEZONE_OFFSET = ZoneOffset.UTC;
     private static final SignatureAlgorithm DEFAULT_SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
-    private final String secret = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize";
-    private final String expirationTimeInMilliSecond = "28800";
+    private final String secret;
+    private final String expirationTimeInMilliSecond;
+
+    @Autowired
+    public JwtService(@Value("${jjwt.secret}") final String secret,
+                      @Value("${jjwt.expiration}") final String expirationTimeInMilliSecond) {
+        this.secret = secret;
+        this.expirationTimeInMilliSecond = expirationTimeInMilliSecond;
+    }
 
     public Mono<JwtToken> parse(String token) {
         try {
@@ -47,7 +56,6 @@ public class JwtService implements Serializable {
                                      .withExpiredAt(expiredAt)
                                      .withSignatureAlgorithm(DEFAULT_SIGNATURE_ALGORITHM)
                                      .build());
-
         } catch (Exception e) {
             return Mono.error(e);
         }

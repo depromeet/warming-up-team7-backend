@@ -17,4 +17,14 @@ public class InMemoryRoomRepository implements RoomRepository {
         ROOMS.put(room.getId(), room);
         return Mono.just(room);
     }
+
+    @Override
+    public Mono<Room> findById(long id) {
+        return Mono.just(ROOMS.get(id));
+    }
+
+    @Override
+    public Mono<Room> removeById(long id) {
+        return Mono.just(ROOMS.remove(id));
+    }
 }

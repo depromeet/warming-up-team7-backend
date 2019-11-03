@@ -4,8 +4,11 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface RoomRepository extends org.springframework.data.repository.Repository {
+public interface RoomRepository {
 
     Mono<Room> save(Room room);
 
+    Mono<Room> findById(long id);
+
+    Mono<Room> removeById(long id);
 }

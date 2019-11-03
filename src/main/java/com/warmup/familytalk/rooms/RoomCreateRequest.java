@@ -1,21 +1,24 @@
 package com.warmup.familytalk.rooms;
 
-import com.warmup.familytalk.register.model.User;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
-class RoomCreateRequest {
+public class RoomCreateRequest {
 
     private String name;
-    private User owner;
+//    private User owner;
 
     Room toEntity() {
         return Room.builder()
                 .name(name)
-                .owner(owner)
+//                .owner(owner)
                 .build();
     }
 }
+

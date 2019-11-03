@@ -10,12 +10,17 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
+    Mono<Room> find(long id) {
+        return roomRepository.findById(id);
+    }
+
     Mono<Room> create(Room room) {
         return roomRepository.save(room);
     }
 
-    // 방 조회 (in: userById, out: Optional<Room>
-
-
-    // 방 삭제
+    Mono<Room> remove(long id) {
+        return roomRepository.findById(id)
+                .flatMap(it -> roomRepository.removeById(it.getId())
+                        .thenReturn(it));
+    }
 }

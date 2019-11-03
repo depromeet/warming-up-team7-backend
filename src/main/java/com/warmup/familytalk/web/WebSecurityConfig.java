@@ -34,6 +34,8 @@ public class WebSecurityConfig {
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .pathMatchers("/l7_health_check").permitAll()
+                .pathMatchers("/chat/**").permitAll()
+                .pathMatchers("/rooms").authenticated()
                 .pathMatchers("/test/**").permitAll()
                 .pathMatchers("/login").permitAll()
                 .anyExchange().authenticated()

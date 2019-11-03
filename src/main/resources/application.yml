@@ -1,6 +1,14 @@
 spring:
   profiles:
     active: local
+  main:
+    web-application-type: reactive
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
 
 password:
   encoder:
@@ -16,13 +24,6 @@ server:
   error:
     whitelabel:
       enabled: false
-
-logging:
-  level:
-    .: error
-    org.springframework: ERROR
-    com.warmup.familytalk: INFO
-
 ---
 
 spring:
@@ -52,8 +53,3 @@ spring:
 
 logging:
   path: /home/depromeet7/logs
-
----
-
-spring:
-  profiles: test

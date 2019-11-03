@@ -15,14 +15,14 @@ import static com.warmup.familytalk.common.LoggingUtils.logOnNext;
 @Slf4j
 @Service
 public class UserService {
-    private final String adminUsername = "admin001";// password: admin
+    private final String adminUsername = "admin001";// password: admin001
     private final User admin = new User(1000,
                                         adminUsername,
                                         "dQNjUIMorJb8Ubj2+wVGYp6eAeYkdekqAcnYp+aRq5w=",
                                         false,
                                         Arrays.asList(Role.ROLE_ADMIN));
 
-    private final String userUsername = "user001";// password: user
+    private final String userUsername = "user001";// password: user001
     private final User user = new User(1001,
                                        userUsername,
                                        "cBrlgyL2GI2GINuLUUwgojITuIufFycpLG4490dhGtY=",
@@ -30,7 +30,6 @@ public class UserService {
                                        Arrays.asList(Role.ROLE_USER));
 
     public Mono<User> findByUsername(String username) {
-
         return Flux.just(admin, user)
                    .filter(candidate -> candidate.equalsIn(username))
                    .switchIfEmpty(Mono.error(new IllegalArgumentException("Not found username")))

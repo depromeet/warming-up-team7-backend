@@ -14,7 +14,7 @@ class ChatMessage {
     private Long roomId;
     private EventType eventType;
     private Sender sender;
-    private MessageType messageType;
+    private MessageType messageType; // NEWS
     private String contents;
 
     @JsonCreator
@@ -37,7 +37,7 @@ class ChatMessage {
 
     enum MessageType {
 
-        IMAGE, TEXT
+        IMAGE, TEXT // NEWS
     }
 
     enum EventType {

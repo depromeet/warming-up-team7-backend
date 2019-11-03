@@ -3,8 +3,6 @@ package com.warmup.familytalk.rooms;
 import com.warmup.familytalk.global.Handler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.reactivestreams.Publisher;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -13,6 +11,8 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 
 import static com.warmup.familytalk.chats.ChatConfig.CHAT_URI;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.web.reactive.function.server.ServerResponse.created;
 
 @Slf4j
 @Component
@@ -23,16 +23,10 @@ public class CreateRoomHandler implements Handler {
 
     @Override
     public Mono<ServerResponse> handle(ServerRequest request) {
-        Mono<Room> room = request.bodyToMono(RoomCreateRequest.class)
-                .flatMap(it -> roomService.create(it.toEntity()));
-        return writeResponse(room);
-    }
-
-    private static Mono<ServerResponse> writeResponse(Publisher<Room> room) {
-        return Mono.from(room)
-                .flatMap(it -> ServerResponse
-                        .created(URI.create(CHAT_URI + it.getId()))
-                        .contentType(MediaType.APPLICATION_JSON)
+        return request.bodyToMono(RoomCreateRequest.class)
+                .flatMap(it -> roomService.create(it.toEntity()))
+                .flatMap(it -> created(URI.create(CHAT_URI + it.getId()))
+                        .contentType(APPLICATION_JSON)
                         .build()
                 );
     }

@@ -31,6 +31,15 @@ public class Room {
         this.updateDate = updateDate;
     }
 
+    static Room create(String name, User owner) {
+        return Room.builder()
+                .name(name)
+                .owner(owner)
+                .createDate(LocalDateTime.now())
+                .updateDate(LocalDateTime.now())
+                .build();
+    }
+
     void populate() {
         id = ID.incrementAndGet();
         createDate = LocalDateTime.now();

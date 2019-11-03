@@ -1,6 +1,5 @@
 package com.warmup.familytalk.chats;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -18,6 +17,7 @@ import static com.warmup.familytalk.chats.ChatConfig.CHAT_URI;
 public class ChatSocketHandler implements WebSocketHandler {
 
     private static final ChatRooms ROOMS = ChatRooms.getInstance();
+    private static final ChatManager CHAT_MANAGER = new ChatManager();
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -36,7 +36,7 @@ public class ChatSocketHandler implements WebSocketHandler {
         Flux<String> outputMessages = Flux.from(chatRoom.getEvent())
                 .map(this::toJSON);
 
-        ChatSocketSubscriber subscriber = new ChatSocketSubscriber(chatRoom);
+        ChatSocketSubscriber subscriber = new ChatSocketSubscriber(chatRoom, CHAT_MANAGER);
         session.receive()
                 .map(WebSocketMessage::getPayloadAsText)
                 .map(this::toChatMessage)
