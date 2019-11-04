@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import com.warmup.familytalk.bot.model.BotNewsResponse;
+import com.warmup.familytalk.bot.model.Country;
 import com.warmup.familytalk.bot.model.RawNewsResponse;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -42,10 +43,5 @@ public class NewsGeneratorService {
         SPORTS,
         ENTERTAINMENT,
         HEALTH
-    }
-
-    public enum Country {
-        KR,
-
     }
 }
