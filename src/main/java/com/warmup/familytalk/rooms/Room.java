@@ -1,6 +1,6 @@
 package com.warmup.familytalk.rooms;
 
-import com.warmup.familytalk.register.model.User;
+import com.warmup.familytalk.auth.model.User;
 import lombok.Builder;
 import lombok.Getter;
 

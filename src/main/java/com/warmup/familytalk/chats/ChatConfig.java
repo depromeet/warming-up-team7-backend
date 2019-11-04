@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.HandlerMapping;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
@@ -11,16 +13,21 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+
 @Slf4j
 @Configuration
 public class ChatConfig {
 
-    public static final String CHAT_URI = "/chat/room/";
+
+    public static final String CHAT_URL = "/chat/rooms/";
+    private static final String CHAT_INFO_URL = "/chat/history/rooms/";
 
     @Bean
     public HandlerMapping webSocketMapping() {
         Map<String, WebSocketHandler> handlers = new HashMap<>();
-        handlers.put(CHAT_URI.concat("**"), new ChatSocketHandler());
+        handlers.put(CHAT_URL.concat("**"), new ChatSocketHandler());
 
         SimpleUrlHandlerMapping simpleUrlHandlerMapping = new SimpleUrlHandlerMapping();
         simpleUrlHandlerMapping.setUrlMap(handlers);

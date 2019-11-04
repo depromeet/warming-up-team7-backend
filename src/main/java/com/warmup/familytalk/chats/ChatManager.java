@@ -19,8 +19,7 @@ public class ChatManager {
     }
 
     Flux<ChatMessage> findHistoryByRoomId(long id) {
-        CHAT_MESSAGES.stream()
-                .filter(message -> message.getRoomId().equals(id));
-        return null;
+        return Flux.fromStream(CHAT_MESSAGES.stream()
+                                     .filter(message -> message.getRoomId().equals(id)));
     }
 }

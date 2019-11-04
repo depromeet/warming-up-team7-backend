@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
-import static com.warmup.familytalk.chats.ChatConfig.CHAT_URI;
+import static com.warmup.familytalk.chats.ChatConfig.CHAT_URL;
 
 @Slf4j
 public class ChatSocketHandler implements WebSocketHandler {
@@ -39,7 +39,7 @@ public class ChatSocketHandler implements WebSocketHandler {
         ChatSocketSubscriber subscriber = new ChatSocketSubscriber(chatRoom, CHAT_MANAGER);
         session.receive()
                 .map(WebSocketMessage::getPayloadAsText)
-                .map(this::toChatMessage)
+                .map(inputOfData -> this.toChatMessage(inputOfData, roomId))
                 .subscribe(subscriber::onNext, subscriber::onError, session::close);
 
         return session.send(outputMessages.map(session::textMessage));
@@ -49,13 +49,15 @@ public class ChatSocketHandler implements WebSocketHandler {
         return Long.parseLong(session.getHandshakeInfo()
                 .getUri()
                 .getPath()
-                .replace(CHAT_URI, Strings.EMPTY));
+                .replace(CHAT_URL, Strings.EMPTY));
     }
 
-    private ChatMessage toChatMessage(String json) {
+    private ChatMessage toChatMessage(String json, long roomId) {
         try {
-            return mapper.readValue(json, ChatMessage.class);
+            return mapper.readValue(json, ChatMessage.class)
+                                            .bind(roomId);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException("Invalid JSON:" + json);
         }
     }

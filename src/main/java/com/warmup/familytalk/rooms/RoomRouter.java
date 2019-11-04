@@ -6,9 +6,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @EnableWebFlux
@@ -22,7 +20,7 @@ public class RoomRouter {
                                                 FindRoomHandler findRoomHandler,
                                                 RemoveRoomHandler removeRoomHandler) {
         return route(POST(ROOMS_URL), createRoomHandler::handle)
-                .andRoute(GET(ROOMS_URL), findRoomHandler::handle)
-                .andRoute(DELETE(ROOMS_URL), removeRoomHandler::handle);
+                .andRoute(GET(ROOMS_URL.concat("/{id}")), findRoomHandler::handle)
+                .andRoute(DELETE(ROOMS_URL.concat("/{id}")), removeRoomHandler::handle);
     }
 }

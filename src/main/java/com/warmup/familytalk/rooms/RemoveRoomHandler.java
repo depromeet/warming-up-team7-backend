@@ -19,9 +19,8 @@ public class RemoveRoomHandler implements Handler {
     @Override
     public Mono<ServerResponse> handle(ServerRequest request) {
         final long id = Long.parseLong(request.pathVariable("id"));
-        Mono<Room> room = roomService.remove(id);
-        return room.flatMap(it -> ok()
-                .build())
-                .switchIfEmpty(notFound().build());
+        return roomService.remove(id)
+                          .flatMap(it -> ok().build())
+                          .switchIfEmpty(notFound().build());
     }
 }

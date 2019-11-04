@@ -1,4 +1,4 @@
-package com.warmup.familytalk.register.controller;
+package com.warmup.familytalk.auth.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

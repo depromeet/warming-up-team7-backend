@@ -2,7 +2,7 @@ package com.warmup.familytalk.chats;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.warmup.familytalk.register.model.User;
+import com.warmup.familytalk.auth.model.User;
 import lombok.*;
 
 @Getter
@@ -31,8 +31,13 @@ class ChatMessage {
                 .eventType(EventType.ENTER)
                 .messageType(MessageType.TEXT)
                 .contents("User join")
-                .sender(new Sender(0l, user.getUsername()))
+                .sender(new Sender(user.getUserId()))
                 .build();
+    }
+
+    ChatMessage bind(long roomId) {
+        this.roomId = roomId;
+        return this;
     }
 
     enum MessageType {
@@ -47,11 +52,10 @@ class ChatMessage {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    @AllArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @ToString
     static class Sender {
 
         private Long id;
-        private String name;
     }
 }

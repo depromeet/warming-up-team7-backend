@@ -1,12 +1,12 @@
-package com.warmup.familytalk.register.controller;
+package com.warmup.familytalk.auth.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.warmup.familytalk.auth.model.Message;
 import com.warmup.familytalk.common.Trace;
-import com.warmup.familytalk.register.model.Message;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 

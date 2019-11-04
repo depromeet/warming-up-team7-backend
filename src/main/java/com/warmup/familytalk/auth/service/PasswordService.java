@@ -1,7 +1,7 @@
 package com.warmup.familytalk.auth.service;
 
 import org.springframework.stereotype.Service;
-import com.warmup.familytalk.register.model.Auth;
+import com.warmup.familytalk.auth.model.Auth;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;

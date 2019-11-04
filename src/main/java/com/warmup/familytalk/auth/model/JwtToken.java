@@ -1,4 +1,4 @@
-package com.warmup.familytalk.register.model;
+package com.warmup.familytalk.auth.model;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

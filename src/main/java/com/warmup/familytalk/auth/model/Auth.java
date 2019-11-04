@@ -1,6 +1,4 @@
-package com.warmup.familytalk.register.model;
-
-import javax.validation.constraints.NotBlank;
+package com.warmup.familytalk.auth.model;
 
 import com.warmup.familytalk.auth.service.PasswordAware;
 import lombok.AllArgsConstructor;

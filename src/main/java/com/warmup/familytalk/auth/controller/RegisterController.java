@@ -1,4 +1,4 @@
-package com.warmup.familytalk.register.controller;
+package com.warmup.familytalk.auth.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.warmup.familytalk.auth.service.PasswordService;
 import com.warmup.familytalk.common.Trace;
-import com.warmup.familytalk.register.model.Auth;
-import com.warmup.familytalk.register.service.JwtService;
-import com.warmup.familytalk.register.service.UserService;
+import com.warmup.familytalk.auth.model.Auth;
+import com.warmup.familytalk.auth.service.JwtService;
+import com.warmup.familytalk.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -32,6 +32,7 @@ public final class RegisterController {
                           .flatMap(jwtService::generate)
                           .map(Auth.Factory::response)
                           .map(ResponseEntity::ok)
+                          .defaultIfEmpty(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build())
                           .onErrorReturn(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
