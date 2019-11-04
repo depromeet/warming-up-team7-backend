@@ -14,7 +14,6 @@ import com.warmup.familytalk.auth.model.JwtToken;
 import com.warmup.familytalk.auth.model.User;
 import com.warmup.familytalk.auth.service.JwtService;
 import com.warmup.familytalk.auth.service.UserService;
-import com.warmup.familytalk.bot.model.Country;
 import com.warmup.familytalk.bot.service.NewsGeneratorService;
 import com.warmup.familytalk.common.LoggingUtils;
 import com.warmup.familytalk.common.Trace;
@@ -37,7 +36,7 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
 
     @Override
     public void addFormatters(final FormatterRegistry registry) {
-        registry.addConverter(new NewsCountryEnumConverter());
+//        registry.addConverter(new NewsCountryEnumConverter());
         registry.addConverter(new NewsCategoryEnumConverter());
     }
 
@@ -89,10 +88,10 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
         }
     }
 
-    private static class NewsCountryEnumConverter implements Converter<String, Country> {
-        @Override
-        public Country convert(String source) {
-            return Country.valueOf(source.toUpperCase());
-        }
-    }
+//    private static class NewsCountryEnumConverter implements Converter<String, Country> {
+//        @Override
+//        public Country convert(String source) {
+//            return Country.valueOf(source.toUpperCase());
+//        }
+//    }
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.base.Charsets;
 import com.warmup.familytalk.auth.model.User;
 import com.warmup.familytalk.bot.model.BotNewsResponse;
-import com.warmup.familytalk.bot.model.Country;
 import com.warmup.familytalk.bot.model.WeatherResponse;
 import com.warmup.familytalk.bot.service.NewsGeneratorService;
 import com.warmup.familytalk.bot.service.WeatherFetchService;
@@ -60,16 +59,15 @@ public class TestController {
     }
 
     @GetMapping(value = "/news")
-    public Mono<ResponseEntity<BotNewsResponse>> news(@RequestParam(name = "country") final Country country,
+    public Mono<ResponseEntity<BotNewsResponse>> news(@RequestParam(name = "country") final String country,
                                                       @RequestParam(name = "category") final NewsGeneratorService.Category category) {
         return newsGeneratorService.fetchRandomNews(country, category)
                                    .map(ResponseEntity::ok);
     }
 
     @GetMapping(value = "/weather")
-    public Mono<ResponseEntity<WeatherResponse>> weather(@RequestParam(name = "country") final Country country,
-                                                         @RequestParam(name = "city") final String city) {
-        return weatherFetchService.fetch(country, city)
+    public Mono<ResponseEntity<WeatherResponse>> weather(@RequestParam(name = "city") final String city) {
+        return weatherFetchService.fetch(city)
                                   .map(ResponseEntity::ok);
     }
 
