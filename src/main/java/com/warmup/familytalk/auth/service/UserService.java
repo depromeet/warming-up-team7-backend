@@ -1,49 +1,36 @@
 package com.warmup.familytalk.auth.service;
 
-import java.util.Arrays;
-
-import org.springframework.stereotype.Service;
+import com.warmup.familytalk.auth.model.Auth;
 import com.warmup.familytalk.auth.model.Role;
 import com.warmup.familytalk.auth.model.User;
+import com.warmup.familytalk.auth.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Flux;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-
-import static com.warmup.familytalk.common.LoggingUtils.logOnError;
-import static com.warmup.familytalk.common.LoggingUtils.logOnNext;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private final String adminUsername = "admin001";// password: admin001
-    private final User admin = new User(1000,
-                                        adminUsername,
-                                        "dQNjUIMorJb8Ubj2+wVGYp6eAeYkdekqAcnYp+aRq5w=",
-                                        false,
-                                        Arrays.asList(Role.ROLE_ADMIN));
 
-    private final String userUsername = "user001";// password: user001
-    private final User user = new User(1001,
-                                       userUsername,
-                                       "cBrlgyL2GI2GINuLUUwgojITuIufFycpLG4490dhGtY=",
-                                       true,
-                                       Arrays.asList(Role.ROLE_USER));
+    private final UserRepository userRepository;
+    private final PasswordService passwordService;
 
-    public Mono<User> findByUsername(String username) {
-        return Flux.just(admin, user)
-                   .filter(candidate -> candidate.equalsIn(username))
-                   .switchIfEmpty(Mono.error(new IllegalArgumentException("Not found username")))
-                   .single()
-                   .doOnEach(logOnNext(user -> log.info("hello world")))
-                   .doOnEach(logOnError(e -> log.error("fail to find username by [{}], e:[{}]", username, e)));
+    public Mono<User> findByUsername(final String username) {
+        return userRepository.getUserByUsername(username);
     }
 
-    public Mono<User> findByUserId(long userId) {
-        Mono<User> validUser = Mono.just(user);
-        Mono<User> validAdmin = Mono.just(admin);
+    public Mono<User> findByUserId(final long userId) {
+        return userRepository.getUserById(userId);
+    }
 
-        return Flux.merge(validUser, validAdmin)
-                   .filter(candidate -> candidate.equalsIn(userId))
-                   .single();
+    public Mono<User> createUser(final Auth.RegisterRequest request) {
+        return userRepository.save(toUser(request));
+    }
+
+    private User toUser(Auth.RegisterRequest request) {
+        final String encodedPassword = passwordService.encode(request.getPassword());
+        return new User(-1, request.getUsername(), encodedPassword, true, Role.ROLE_USER);
     }
 }

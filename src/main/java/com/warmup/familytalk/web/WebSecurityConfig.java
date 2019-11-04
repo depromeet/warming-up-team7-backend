@@ -39,6 +39,7 @@ public class WebSecurityConfig {
                 .pathMatchers("/rooms").permitAll()
                 .pathMatchers("/test/**").permitAll()
                 .pathMatchers("/login").permitAll()
+                .pathMatchers("/register").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }

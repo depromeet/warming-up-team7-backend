@@ -38,9 +38,9 @@ public final class RegisterController {
 
     @PostMapping("/register")
     public final Mono<ResponseEntity<?>> register(@RequestBody final Auth.RegisterRequest authRequest) {
-        // TODO: implements
         passwordService.validate(authRequest);
-        return Mono.just(ResponseEntity.ok().build());
+        userService.createUser(authRequest);
+        return Mono.just(ResponseEntity.status(HttpStatus.CREATED).build());
     }
 }
 

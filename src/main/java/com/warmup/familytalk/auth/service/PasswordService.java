@@ -21,6 +21,10 @@ public class PasswordService {
         }
     }
 
+    public String encode(final String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
+    }
+
     public void validate(final Auth.RegisterRequest authRequest) {
         //
     }

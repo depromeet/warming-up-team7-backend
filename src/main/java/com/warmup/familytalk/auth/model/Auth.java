@@ -1,5 +1,7 @@
 package com.warmup.familytalk.auth.model;
 
+import java.util.Arrays;
+
 import com.warmup.familytalk.auth.service.PasswordAware;
 import lombok.AllArgsConstructor;
 import lombok.Data;
