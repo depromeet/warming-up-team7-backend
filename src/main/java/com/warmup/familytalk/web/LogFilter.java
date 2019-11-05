@@ -34,6 +34,6 @@ public class LogFilter implements WebFilter {
                    .then(chain.filter(exchange)
                               .doOnEach(logOnNext(o -> log.info("done")))
                               .doOnEach(logOnError(o -> log.error("error done")))
-                              .doOnError(e -> logging(trace, () -> log.error("hihihi123123123"))));
+                              .doOnError(e -> e.printStackTrace()));
     }
 }

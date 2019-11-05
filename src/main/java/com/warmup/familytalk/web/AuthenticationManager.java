@@ -2,10 +2,12 @@ package com.warmup.familytalk.web;
 
 import java.util.Collections;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import com.warmup.familytalk.auth.model.JwtToken;
 import com.warmup.familytalk.auth.service.JwtService;
@@ -16,6 +18,7 @@ import reactor.core.scheduler.Schedulers;
 @Component
 @RequiredArgsConstructor
 public class AuthenticationManager implements ReactiveAuthenticationManager {
+
     private final JwtService jwtService;
 
     @Override
