@@ -1,3 +1,0 @@
-userId,username ,password    ,country,profileImageNumber,enabled,roles
-0     ,testname ,testpassword,kr     ,1                 ,true   ,ROLE_USER
-1     ,testname1,testpassword,kr     ,2                 ,true   ,ROLE_USER
