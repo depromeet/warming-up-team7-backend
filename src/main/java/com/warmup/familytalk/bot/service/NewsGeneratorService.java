@@ -1,7 +1,5 @@
 package com.warmup.familytalk.bot.service;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,7 +19,7 @@ public class NewsGeneratorService {
 
     private static final String endpoint = "https://newsapi.org/v2/top-headlines";
 
-    public Mono<BotNewsResponse> fetchRandomNews(final Country country, final Category category) {
+    public Mono<BotNewsResponse> fetchRandomNews(final String country, final Category category) {
         return WebClient.create(uri(country, category))
                         .get()
                         .exchange()
@@ -29,11 +27,11 @@ public class NewsGeneratorService {
                         .map(BotNewsResponse::of);
     }
 
-    private String uri(final Country country, final Category category) {
+    private String uri(final String country, final Category category) {
         return String.format("%s?apiKey=%s&country=%s&category=%s&pageSize=10",
                              endpoint,
                              newsApiToken,
-                             country.name().toLowerCase(),
+                             country.toLowerCase(),
                              category.name().toLowerCase());
     }
 
@@ -42,10 +40,5 @@ public class NewsGeneratorService {
         SPORTS,
         ENTERTAINMENT,
         HEALTH
-    }
-
-    public enum Country {
-        KR,
-
     }
 }

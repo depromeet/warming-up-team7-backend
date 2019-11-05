@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.base.Charsets;
 import com.warmup.familytalk.auth.model.User;
 import com.warmup.familytalk.bot.model.BotNewsResponse;
+import com.warmup.familytalk.bot.model.WeatherResponse;
 import com.warmup.familytalk.bot.service.NewsGeneratorService;
+import com.warmup.familytalk.bot.service.WeatherFetchService;
 import com.warmup.familytalk.common.Trace;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ import static com.warmup.familytalk.common.LoggingUtils.logging;
 @RequiredArgsConstructor
 public class TestController {
     private final NewsGeneratorService newsGeneratorService;
+    private final WeatherFetchService weatherFetchService;
 
     @GetMapping
     public ResponseEntity hi() {
@@ -56,10 +59,16 @@ public class TestController {
     }
 
     @GetMapping(value = "/news")
-    public Mono<ResponseEntity<BotNewsResponse>> news(@RequestParam(name = "country") final NewsGeneratorService.Country country,
+    public Mono<ResponseEntity<BotNewsResponse>> news(@RequestParam(name = "country") final String country,
                                                       @RequestParam(name = "category") final NewsGeneratorService.Category category) {
         return newsGeneratorService.fetchRandomNews(country, category)
                                    .map(ResponseEntity::ok);
+    }
+
+    @GetMapping(value = "/weather")
+    public Mono<ResponseEntity<WeatherResponse>> weather(@RequestParam(name = "city") final String city) {
+        return weatherFetchService.fetch(city)
+                                  .map(ResponseEntity::ok);
     }
 
     private Stream<String> getTestFileStream(final Trace trace, final String location) {

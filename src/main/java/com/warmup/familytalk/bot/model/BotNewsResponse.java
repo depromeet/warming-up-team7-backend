@@ -9,7 +9,7 @@ public class BotNewsResponse {
     private String title;
     private String content;
     private String url;
-    private String urlToImage;
+    private String imageUrl;
     private String publishedAt;
 
     public static BotNewsResponse of(final RawNewsResponse raw) {
@@ -25,7 +25,7 @@ public class BotNewsResponse {
         response.setTitle(articles.getTitle());
         response.setContent(articles.getDescription());
         response.setUrl(articles.getUrl());
-        response.setUrlToImage(articles.getUrlToImage());
+        response.setImageUrl(articles.getUrlToImage());
         response.setPublishedAt(articles.getPublishedAt());
 
         return response;

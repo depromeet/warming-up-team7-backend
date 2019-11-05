@@ -23,6 +23,8 @@ jjwt:
 api:
   news:
     token: cad159957eba4f1da3adc1bbb21de063
+  weather:
+    token: 69143ac081ec9450b8b29d5f508e658a
 
 server:
   error:

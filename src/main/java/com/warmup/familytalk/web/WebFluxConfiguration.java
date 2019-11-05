@@ -36,7 +36,7 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
 
     @Override
     public void addFormatters(final FormatterRegistry registry) {
-        registry.addConverter(new NewsCountryEnumConverter());
+//        registry.addConverter(new NewsCountryEnumConverter());
         registry.addConverter(new NewsCategoryEnumConverter());
     }
 
@@ -88,10 +88,10 @@ public class WebFluxConfiguration implements WebFluxConfigurer {
         }
     }
 
-    private static class NewsCountryEnumConverter implements Converter<String, NewsGeneratorService.Country> {
-        @Override
-        public NewsGeneratorService.Country convert(String source) {
-            return NewsGeneratorService.Country.valueOf(source.toUpperCase());
-        }
-    }
+//    private static class NewsCountryEnumConverter implements Converter<String, Country> {
+//        @Override
+//        public Country convert(String source) {
+//            return Country.valueOf(source.toUpperCase());
+//        }
+//    }
 }
