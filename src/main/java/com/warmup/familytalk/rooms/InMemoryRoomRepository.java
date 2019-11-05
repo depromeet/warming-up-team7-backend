@@ -1,15 +1,19 @@
 package com.warmup.familytalk.rooms;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Repository
 public class InMemoryRoomRepository implements RoomRepository {
 
     private static final Map<Long, Room> ROOMS = new ConcurrentHashMap<>();
+
+    public static final Map<Long, Room> ID_TO_ROOM = new ConcurrentHashMap<>();
 
     @Override
     public Mono<Room> save(Room room) {
@@ -21,6 +25,11 @@ public class InMemoryRoomRepository implements RoomRepository {
     @Override
     public Mono<Room> findById(long id) {
         return Mono.just(ROOMS.get(id));
+    }
+
+    @Override
+    public Mono<Room> findByUserId(long userId) {
+        return Mono.justOrEmpty(ID_TO_ROOM.get(userId));
     }
 
     @Override

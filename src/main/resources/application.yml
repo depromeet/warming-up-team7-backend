@@ -29,13 +29,13 @@ server:
     whitelabel:
       enabled: false
 
-logging:
-  level:
-    .: error
-    org.springframework: ERROR
-    com.warmup.familytalk: INFO
-
-debug: true
+#logging:
+#  level:
+#    .: error
+#    org.springframework: ERROR
+#    com.warmup.familytalk: INFO
+#
+#debug: true
 ---
 
 spring:

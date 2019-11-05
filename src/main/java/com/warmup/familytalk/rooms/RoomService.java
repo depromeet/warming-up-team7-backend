@@ -1,5 +1,6 @@
 package com.warmup.familytalk.rooms;
 
+import com.warmup.familytalk.auth.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -14,13 +15,17 @@ public class RoomService {
         return roomRepository.findById(id);
     }
 
-    Mono<Room> create(Room room) {
-        return roomRepository.save(room);
+    Mono<Room> findRoomByUserId(long userId) {
+        return roomRepository.findByUserId(userId);
+    }
+
+    Mono<Room> create(RoomCreateRequest request, Mono<User> user) {
+        return user.flatMap(it -> roomRepository.save(Room.create(request.getName(), it)));
     }
 
     Mono<Room> remove(long id) {
         return roomRepository.findById(id)
-                .flatMap(it -> roomRepository.removeById(it.getId())
-                        .thenReturn(it));
+                             .flatMap(it -> roomRepository.removeById(it.getId())
+                                                          .thenReturn(it));
     }
 }

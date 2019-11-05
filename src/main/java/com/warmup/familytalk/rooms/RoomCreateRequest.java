@@ -12,12 +12,4 @@ import lombok.ToString;
 public class RoomCreateRequest {
 
     private String name;
-//    private User owner;
-
-    Room toEntity() {
-        return Room.builder()
-                .name(name)
-//                .owner(owner)
-                .build();
-    }
 }

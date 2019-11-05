@@ -11,4 +11,6 @@ public interface RoomRepository {
     Mono<Room> findById(long id);
 
     Mono<Room> removeById(long id);
+
+    Mono<Room> findByUserId(long userId);
 }

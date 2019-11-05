@@ -16,11 +16,10 @@ public class RoomRouter {
     static final String ROOMS_URL = "/rooms";
 
     @Bean
-    public RouterFunction<ServerResponse> rooms(CreateRoomHandler createRoomHandler,
-                                                FindRoomHandler findRoomHandler,
-                                                RemoveRoomHandler removeRoomHandler) {
-        return route(POST(ROOMS_URL), createRoomHandler::handle)
-                .andRoute(GET(ROOMS_URL.concat("/{id}")), findRoomHandler::handle)
-                .andRoute(DELETE(ROOMS_URL.concat("/{id}")), removeRoomHandler::handle);
+    public RouterFunction<ServerResponse> rooms(RoomHandler handle) {
+        return route(POST(ROOMS_URL), handle::create)
+                .andRoute(GET(ROOMS_URL.concat("/my")), handle::searchByUser)
+                .andRoute(GET(ROOMS_URL.concat("/{id}")), handle::search)
+                .andRoute(DELETE(ROOMS_URL.concat("/{id}")), handle::delete);
     }
 }
