@@ -1,6 +1,14 @@
 spring:
   profiles:
     active: local
+  main:
+    web-application-type: reactive
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
 
 password:
   encoder:
@@ -10,19 +18,26 @@ password:
 
 jjwt:
   secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
-  expiration: 28800
+  expiration: 288000000
+
+api:
+  news:
+    token: cad159957eba4f1da3adc1bbb21de063
+  weather:
+    token: 69143ac081ec9450b8b29d5f508e658a
 
 server:
   error:
     whitelabel:
       enabled: false
 
-logging:
-  level:
-    .: error
-    org.springframework: ERROR
-    com.warmup.familytalk: INFO
-
+#logging:
+#  level:
+#    .: error
+#    org.springframework: ERROR
+#    com.warmup.familytalk: INFO
+#
+#debug: true
 ---
 
 spring:
@@ -51,9 +66,4 @@ spring:
   profiles: prod
 
 logging:
-  path: /Users/user/logs
-
----
-
-spring:
-  profiles: test
+  path: /home/depromeet7/logs
