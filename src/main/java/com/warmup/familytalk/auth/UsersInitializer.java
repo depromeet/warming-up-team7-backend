@@ -20,6 +20,8 @@ public class UsersInitializer implements ApplicationRunner {
         Auth.RegisterRequest user = new Auth.RegisterRequest("user",
                                                              "password",
                                                              "password",
+                                                             "kr",
+                                                             "1",
                                                              "EN");
         userService.createUser(user)
                    .subscribe(it -> log.debug("Create user: {}", it));
