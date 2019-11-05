@@ -1,20 +1,19 @@
 package com.warmup.familytalk.auth.service;
 
-import java.util.Arrays;
-
-import org.springframework.stereotype.Service;
 import com.warmup.familytalk.auth.model.Auth;
 import com.warmup.familytalk.auth.model.Role;
 import com.warmup.familytalk.auth.model.User;
 import com.warmup.familytalk.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordService passwordService;
 

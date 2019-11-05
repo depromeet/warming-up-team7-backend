@@ -1,6 +1,5 @@
 package com.warmup.familytalk.chats;
 
-
 import com.warmup.familytalk.auth.model.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.UnicastProcessor;
-
 import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j

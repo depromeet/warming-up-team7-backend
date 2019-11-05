@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import com.warmup.familytalk.auth.model.JwtToken;
 import com.warmup.familytalk.auth.model.User;
@@ -17,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
+@Primary
 public class JwtService implements Serializable {
     private static final long serialVersionUID = 3830145016693475178L;
     private static final ZoneOffset DEFAULT_TIMEZONE_OFFSET = ZoneOffset.UTC;
