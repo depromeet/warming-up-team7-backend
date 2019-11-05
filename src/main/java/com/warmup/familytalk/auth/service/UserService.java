@@ -32,6 +32,12 @@ public class UserService {
 
     private User toUser(Auth.RegisterRequest request) {
         final String encodedPassword = passwordService.encode(request.getPassword());
-        return new User(-1, request.getUsername(), encodedPassword, true, Role.ROLE_USER);
+        return new User(-1,
+                        request.getUsername(),
+                        encodedPassword,
+                        request.getCountry(),
+                        request.getProfileImageNumber(),
+                        true,
+                        Role.ROLE_USER);
     }
 }

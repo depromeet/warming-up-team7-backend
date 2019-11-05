@@ -3,6 +3,7 @@ package com.warmup.familytalk.auth.model;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,13 +11,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warmup.familytalk.auth.service.PasswordAware;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
+import reactor.core.publisher.Mono;
 
+@Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,19 +29,19 @@ public class User implements UserDetails, PasswordAware {
     //
     // 아래 필드 이름은 user.csv에서 key 값으로 사용되고 있으므로, 변경에 주의를 요한다.
     //
-    @Getter
-    @Setter
     private long userId;
     private String username;
     private String password;
+    private String country;
 
-    @Getter
-    @Setter
+    private String profileImageNumber;
+
     private Boolean enabled;
-
-    @Getter
-    @Setter
     private Role role;
+
+    public String getProfileImageUrl() {
+        return toS3ProfileUrl(profileImageNumber);
+    }
 
     @Override
     public String getUsername() {
@@ -95,5 +99,28 @@ public class User implements UserDetails, PasswordAware {
                              password,
                              enabled,
                              role.name());
+    }
+
+    private String toS3ProfileUrl(String imageId) {
+        return String.format("https://team7wp.s3.ap-northeast-2.amazonaws.com/profileImage/%s.png", imageId);
+    }
+
+    @Data
+    public static class Response {
+        private long userId;
+        private String username;
+        private String country;
+        private String profileImageUrl;
+
+        public static Mono<Response> of(final Mono<User> byUserId) {
+            return byUserId.map(user -> {
+                Response response = new Response();
+                response.setUserId(user.getUserId());
+                response.setUsername(user.getUsername());
+                response.setCountry(user.getCountry());
+                response.setProfileImageUrl(user.getProfileImageUrl());
+                return response;
+            });
+        }
     }
 }

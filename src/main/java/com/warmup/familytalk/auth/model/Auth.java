@@ -26,6 +26,8 @@ public class Auth {
         private String username;
         private String password;
         private String passwordForValidation;
+        private String country;
+        private String profileImageNumber;
 
         // TODO: not just using String class
         private String region;

@@ -51,7 +51,7 @@ public class UserRepository {
         try {
             Reader in = new FileReader(new ClassPathResource("/user.csv").getFile());
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
-                    .withHeader("userId", "username", "password", "enabled", "roles")
+                    .withHeader("userId", "username", "password", "country", "profileImageNumber", "enabled", "roles")
                     .withTrim()
                     .withFirstRecordAsHeader()
                     .parse(in);
@@ -59,10 +59,18 @@ public class UserRepository {
                 long userId = Long.parseLong(record.get("userId"));
                 String username = record.get("username");
                 String password = record.get("password");
+                String country = record.get("country");
+                String profileImageNumber = record.get("profileImageNumber");
                 String enabled = record.get("enabled");
                 String roles = record.get("roles");
 
-                User user = new User(userId, username, password, Boolean.parseBoolean(enabled), Role.valueOf(roles));
+                User user = new User(userId,
+                                     username,
+                                     password,
+                                     country,
+                                     profileImageNumber,
+                                     Boolean.parseBoolean(enabled),
+                                     Role.valueOf(roles));
                 userMapById.put(userId, user);
                 userMapByName.put(username, user);
 
