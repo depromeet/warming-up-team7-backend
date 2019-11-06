@@ -86,6 +86,7 @@ public class User implements UserDetails, PasswordAware {
     public static class Response {
         private long userId;
         private String username;
+        private String nickname;
         private String country;
         private String profileImageUrl;
 
@@ -94,6 +95,7 @@ public class User implements UserDetails, PasswordAware {
                 Response response = new Response();
                 response.setUserId(user.getUserId());
                 response.setUsername(user.getUsername());
+                response.setNickname(user.getNickname());
                 response.setCountry(user.getCountry());
                 response.setProfileImageUrl(user.getProfileImageUrl());
                 return response;
