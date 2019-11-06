@@ -1,15 +1,10 @@
 package com.warmup.familytalk.auth.model;
 
-import java.util.Arrays;
-
 import com.warmup.familytalk.auth.service.PasswordAware;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 
-// TODO: use spring validator
-// e.g. @NotBlank
 public class Auth {
     @Data
     @NoArgsConstructor
@@ -24,6 +19,7 @@ public class Auth {
     @AllArgsConstructor
     public static class RegisterRequest implements PasswordAware {
         private String username;
+        private String nickname;
         private String password;
         private String passwordForValidation;
         private String country;
@@ -31,15 +27,6 @@ public class Auth {
 
         // TODO: not just using String class
         private String region;
-
-        public boolean isValidPassword() {
-            return StringUtils.equals(password, passwordForValidation);
-        }
-
-        public boolean isValidUsername() {
-            // TODO: implements;
-            return true;
-        }
     }
 
     @Data

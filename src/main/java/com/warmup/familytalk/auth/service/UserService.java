@@ -33,6 +33,7 @@ public class UserService {
         final String encodedPassword = passwordService.encode(request.getPassword());
         return new User(-1,
                         request.getUsername(),
+                        request.getNickname(),
                         encodedPassword,
                         request.getCountry(),
                         request.getProfileImageNumber(),
