@@ -1,28 +1,34 @@
 package com.warmup.familytalk.chats;
 
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.UnicastProcessor;
 
+import java.awt.*;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @Slf4j
 public class ChatSocketSubscriber {
 
-    private ChatManager chatManager;
-    private ChatRoom chatRoom;
+    private ChatRoomManager chatRoomManager;
     private UnicastProcessor<ChatMessage> chatMessagePublisher;
-    private Optional<ChatMessage> lastReceivedMessage = Optional.empty();
+//    private Optional<ChatMessage> lastReceivedMessage = Optional.empty();
 
-    ChatSocketSubscriber(ChatRoom chatRoom, ChatManager chatManager) {
-        this.chatRoom = chatRoom;
+
+    ChatSocketSubscriber(ChatRoom chatRoom) {
+//        this.chatRoom = chatRoom;
         this.chatMessagePublisher = chatRoom.getEventProcessor();
-        this.chatManager = chatManager;
     }
+/*
+    void join(ChatMessage chatMessage){
+        lastReceivedMessage = Optional.of(chatMessage);
+    }*/
 
     void onNext(ChatMessage chatMessage) {
         log.debug("{}", chatMessage);
-        chatManager.saveMessage(chatMessage);
-        lastReceivedMessage = Optional.of(chatMessage);
+//        lastReceivedMessage = Optional.of(chatMessage);
         chatMessagePublisher.onNext(chatMessage);
     }
 

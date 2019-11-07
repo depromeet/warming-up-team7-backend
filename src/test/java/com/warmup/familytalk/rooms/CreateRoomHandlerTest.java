@@ -1,7 +1,5 @@
 package com.warmup.familytalk.rooms;
 
-import com.warmup.familytalk.register.model.Role;
-import com.warmup.familytalk.register.model.User;
 import com.warmup.familytalk.supports.HandlerSupports;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
-
-import java.util.Arrays;
 
 import static com.warmup.familytalk.rooms.RoomRouter.ROOMS_URL;
 

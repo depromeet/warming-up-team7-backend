@@ -18,8 +18,6 @@ public class RoomRouter {
     @Bean
     public RouterFunction<ServerResponse> rooms(RoomHandler handle) {
         return route(POST(ROOMS_URL), handle::create)
-                .andRoute(GET(ROOMS_URL.concat("/my")), handle::searchByUser)
-                .andRoute(GET(ROOMS_URL.concat("/{id}")), handle::search)
                 .andRoute(DELETE(ROOMS_URL.concat("/{id}")), handle::delete);
     }
 }

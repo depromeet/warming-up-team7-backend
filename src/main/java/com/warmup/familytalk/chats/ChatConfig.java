@@ -1,6 +1,8 @@
 package com.warmup.familytalk.chats;
 
+import com.warmup.familytalk.auth.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.HandlerMapping;
@@ -15,14 +17,15 @@ import java.util.Map;
 @Configuration
 public class ChatConfig {
 
-
     public static final String CHAT_URL = "/chat/rooms/";
-    private static final String CHAT_INFO_URL = "/chat/history/rooms/";
+
+    @Autowired
+    private ChatRoomManager chatRoomManager;
 
     @Bean
     public HandlerMapping webSocketMapping() {
         Map<String, WebSocketHandler> handlers = new HashMap<>();
-        handlers.put(CHAT_URL.concat("**"), new ChatSocketHandler());
+        handlers.put(CHAT_URL.concat("**"), new ChatSocketHandler(chatRoomManager));
 
         SimpleUrlHandlerMapping simpleUrlHandlerMapping = new SimpleUrlHandlerMapping();
         simpleUrlHandlerMapping.setUrlMap(handlers);
