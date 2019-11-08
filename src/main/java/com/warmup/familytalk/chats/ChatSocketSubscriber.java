@@ -14,21 +14,20 @@ public class ChatSocketSubscriber {
 
     private ChatRoomManager chatRoomManager;
     private UnicastProcessor<ChatMessage> chatMessagePublisher;
-//    private Optional<ChatMessage> lastReceivedMessage = Optional.empty();
-
 
     ChatSocketSubscriber(ChatRoom chatRoom) {
 //        this.chatRoom = chatRoom;
         this.chatMessagePublisher = chatRoom.getEventProcessor();
     }
-/*
-    void join(ChatMessage chatMessage){
-        lastReceivedMessage = Optional.of(chatMessage);
-    }*/
+
+    void onNext(Mono<ChatMessage> chatMessage) {
+        log.debug("{}", chatMessage);
+//        lastReceivedMessage = Optional.of(chatMessage);
+        chatMessagePublisher.onNext(chatMessage.block());
+    }
 
     void onNext(ChatMessage chatMessage) {
         log.debug("{}", chatMessage);
-//        lastReceivedMessage = Optional.of(chatMessage);
         chatMessagePublisher.onNext(chatMessage);
     }
 

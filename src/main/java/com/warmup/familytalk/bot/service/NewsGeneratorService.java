@@ -1,7 +1,9 @@
 package com.warmup.familytalk.bot.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import com.warmup.familytalk.bot.model.BotNewsResponse;
 import com.warmup.familytalk.bot.model.RawNewsResponse;
@@ -20,6 +22,7 @@ public class NewsGeneratorService {
     private static final String endpoint = "https://newsapi.org/v2/top-headlines";
 
     public Mono<BotNewsResponse> fetchRandomNews(final String country, final Category category) {
+
         return WebClient.create(uri(country, category))
                         .get()
                         .exchange()

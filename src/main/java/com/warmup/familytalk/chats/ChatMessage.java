@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warmup.familytalk.auth.model.User;
 import lombok.*;
-import reactor.core.publisher.Mono;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -21,25 +20,34 @@ class ChatMessage {
     @JsonCreator
     static ChatMessage create(
             @JsonProperty("messageType") MessageType messageType,
+            @JsonProperty("eventType") EventType eventType,
             @JsonProperty("contents") String message) {
 //            @JsonProperty("sender") Sender sender) {
-        return new ChatMessage(0L, EventType.TALK, null, messageType, message);
+        return new ChatMessage(0L, eventType, null, messageType, message);
     }
 
-    ChatMessage bind(long roomId, long userId) {
+    ChatMessage bind(long roomId, User user) {
         this.roomId = roomId;
-        this.sender = new Sender(userId);
+        this.sender = new Sender(user.getUserId(), user.getUsername());
         return this;
+    }
+
+    boolean isNews() {
+        return eventType == EventType.NEWS;
+    }
+
+    void setMessage(String message) {
+        contents = message;
     }
 
     enum MessageType {
 
-        IMAGE, TEXT // NEWS
+        TEXT, TECHNOLOGY, SPORTS, ENTERTAINMENT, HEALTH
     }
 
     enum EventType {
 
-        ENTER, TALK
+        ENTER, TALK, NEWS
     }
 
     @Getter
@@ -48,6 +56,7 @@ class ChatMessage {
     @ToString
     static class Sender {
 
-        private Long id;
+        private Long userId;
+        private String name;
     }
 }

@@ -1,6 +1,8 @@
 package com.warmup.familytalk.chats;
 
 import com.warmup.familytalk.auth.service.JwtService;
+import com.warmup.familytalk.auth.service.UserService;
+import com.warmup.familytalk.bot.service.NewsGeneratorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,10 +24,16 @@ public class ChatConfig {
     @Autowired
     private ChatRoomManager chatRoomManager;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private NewsGeneratorService newsGeneratorService;
+
     @Bean
     public HandlerMapping webSocketMapping() {
         Map<String, WebSocketHandler> handlers = new HashMap<>();
-        handlers.put(CHAT_URL.concat("**"), new ChatSocketHandler(chatRoomManager));
+        handlers.put(CHAT_URL.concat("**"), new ChatSocketHandler(chatRoomManager, userService, newsGeneratorService));
 
         SimpleUrlHandlerMapping simpleUrlHandlerMapping = new SimpleUrlHandlerMapping();
         simpleUrlHandlerMapping.setUrlMap(handlers);
