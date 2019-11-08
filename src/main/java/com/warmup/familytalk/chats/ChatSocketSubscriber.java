@@ -20,12 +20,6 @@ public class ChatSocketSubscriber {
         this.chatMessagePublisher = chatRoom.getEventProcessor();
     }
 
-    void onNext(Mono<ChatMessage> chatMessage) {
-        log.debug("{}", chatMessage);
-//        lastReceivedMessage = Optional.of(chatMessage);
-        chatMessagePublisher.onNext(chatMessage.block());
-    }
-
     void onNext(ChatMessage chatMessage) {
         log.debug("{}", chatMessage);
         chatMessagePublisher.onNext(chatMessage);
