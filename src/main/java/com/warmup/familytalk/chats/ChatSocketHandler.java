@@ -1,7 +1,6 @@
 package com.warmup.familytalk.chats;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.warmup.familytalk.auth.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -14,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.warmup.familytalk.chats.ChatConfig.CHAT2_URL;
+import static com.warmup.familytalk.chats.ChatConfig.CHAT_URL;
 import static com.warmup.familytalk.chats.ChatRoomManager.CHATROOMS;
 
 @Slf4j
@@ -58,7 +57,7 @@ public class ChatSocketHandler implements WebSocketHandler {
         return Long.parseLong(session.getHandshakeInfo()
                                      .getUri()
                                      .getPath()
-                                     .replace(CHAT2_URL, Strings.EMPTY));
+                                     .replace(CHAT_URL, Strings.EMPTY));
     }
 
     private ChatMessage toChatMessage(String json, long roomId, long userId) {
