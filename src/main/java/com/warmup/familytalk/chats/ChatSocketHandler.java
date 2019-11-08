@@ -46,7 +46,7 @@ public class ChatSocketHandler implements WebSocketHandler {
 
                     session.receive()
                            .map(WebSocketMessage::getPayloadAsText)
-                           .map(it -> toChatMessage(it, roomId, user))
+                           .flatMap(it -> toChatMessage(it, roomId, user))
                            .subscribe(subscriber::onNext, subscriber::onError, subscriber::onComplete);
 
                     return session.send(outputMessages.map(session::textMessage));
@@ -73,27 +73,35 @@ public class ChatSocketHandler implements WebSocketHandler {
 
     private Mono<ChatMessage> toChatMessage(String json, long roomId, User user) {
         try {
-            ChatMessage message = mapper.readValue(json, ChatMessage.class);
-            message.bind(roomId, user);
+            return newsGeneratorService.fetchRandomNews(user.getCountry(),
+                                                        NewsGeneratorService.Category.SPORTS)
+                                       .map(botNewsResponse -> {
+                                           try {
+                                               return mapper.writeValueAsString(botNewsResponse);
+                                           } catch (JsonProcessingException e) {
+                                               e.printStackTrace();
+                                               throw new RuntimeException(e);
+                                           }
+                                       })
+                                       .map(str -> {
+                                           ChatMessage message = null;
 
-            if (message.isNews()) {
-                Mono<String> map = newsGeneratorService.fetchRandomNews(user.getCountry(),
-                                                                        NewsGeneratorService.Category.SPORTS)
-                                                       .map(botNewsResponse -> {
-                                                           try {
-                                                               return mapper.writeValueAsString(botNewsResponse);
-                                                           } catch (JsonProcessingException e) {
-                                                               e.printStackTrace();
-                                                               throw new RuntimeException(e);
-                                                           }
-                                                       });
-                message.setMessage(map.block());
-            }
-            return Mono.just(message);
-        } catch (IOException e) {
+
+                                           try {
+                                               message = mapper.readValue(json, ChatMessage.class);
+                                           } catch (IOException e) {
+                                               e.printStackTrace();
+                                           }
+                                           if (message != null) {
+                                               message.bind(roomId, user);
+                                               message.setMessage(str);
+                                           }
+                                           return message;
+                                       });
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Invalid JSON:" + json);
         }
+        return Mono.empty();
     }
 
     private String toJSON(ChatMessage chatMessage) {
