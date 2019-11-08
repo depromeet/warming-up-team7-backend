@@ -27,22 +27,6 @@ public class RoomHandler {
 
     private final UserService userService;
 
-    Mono<ServerResponse> searchByUser(ServerRequest request) {
-        return request.principal()
-                      .map(Principal::getName)
-                      .map(Long::valueOf)
-                      .flatMap(roomService::findRoomByUserId)
-                      .flatMap(room -> ServerResponse.ok()
-                                                     .body(fromObject(room)));
-    }
-
-    Mono<ServerResponse> search(ServerRequest request) {
-        return roomService.find(Long.parseLong(request.pathVariable("id")))
-                          .flatMap(it -> ok().contentType(MediaType.APPLICATION_JSON)
-                                             .body(fromObject(it)))
-                          .switchIfEmpty(notFound().build());
-    }
-
     Mono<ServerResponse> create(ServerRequest request) {
         return request.bodyToMono(RoomCreateRequest.class)
                       .flatMap(it -> roomService.create(it, request.principal()

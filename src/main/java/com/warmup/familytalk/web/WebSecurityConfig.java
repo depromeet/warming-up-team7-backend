@@ -10,6 +10,8 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
+import static com.warmup.familytalk.chats.ChatRouter.CHAT_INFO_URL;
+
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 @RequiredArgsConstructor
@@ -37,6 +39,8 @@ public class WebSecurityConfig {
                 .pathMatchers("/chat/**").permitAll()
                 .pathMatchers("/rooms").authenticated()
                 .pathMatchers("/rooms/**").authenticated()
+                .pathMatchers(CHAT_INFO_URL).permitAll()
+                .pathMatchers(CHAT_INFO_URL + "/**").permitAll()
                 .pathMatchers("/test/**").permitAll()
                 .pathMatchers("/login").permitAll()
                 .pathMatchers("/register").permitAll()

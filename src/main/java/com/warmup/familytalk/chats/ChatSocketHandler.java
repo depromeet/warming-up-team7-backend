@@ -1,6 +1,7 @@
 package com.warmup.familytalk.chats;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.reactive.socket.WebSocketHandler;
@@ -10,52 +11,60 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import static com.warmup.familytalk.chats.ChatConfig.CHAT_URL;
+import static com.warmup.familytalk.chats.ChatRoomManager.CHATROOMS;
 
 @Slf4j
+@RequiredArgsConstructor
 public class ChatSocketHandler implements WebSocketHandler {
 
-    private static final ChatRooms ROOMS = ChatRooms.getInstance();
-    private static final ChatManager CHAT_MANAGER = new ChatManager();
+    private final ChatRoomManager chatRoomManager;
 
     private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Mono<Void> handle(WebSocketSession session) {
-        log.debug("handle : {}, {}", session.getId(), session.getHandshakeInfo());
-
         long roomId = getRoomId(session);
         log.debug("RoomId : {}", roomId);
-        ChatRoom chatRoom = ROOMS.enter(roomId);
+        ChatRoom chatRoom = CHATROOMS.getChatRoom(roomId);
 
-        // todo : User info header
-//        Account user = (Account) session.getAttributes().get("user");
-//        chatRoom.join(user);
+        ChatSocketSubscriber subscriber = new ChatSocketSubscriber(chatRoom);
+        return getUserId(session)
+                .flatMap(userId -> {
+                    Flux<String> outputMessages = Flux.from(chatRoom.getEvent())
+                                                      .map(this::toJSON);
+                    chatRoomManager.enter(roomId, userId);
 
-        Flux<String> outputMessages = Flux.from(chatRoom.getEvent())
-                .map(this::toJSON);
+                    session.receive()
+                           .map(WebSocketMessage::getPayloadAsText)
+                           .map(it -> toChatMessage(it, roomId, userId))
+                           .subscribe(subscriber::onNext, subscriber::onError, subscriber::onComplete);
 
-        ChatSocketSubscriber subscriber = new ChatSocketSubscriber(chatRoom, CHAT_MANAGER);
-        session.receive()
-                .map(WebSocketMessage::getPayloadAsText)
-                .map(inputOfData -> this.toChatMessage(inputOfData, roomId))
-                .subscribe(subscriber::onNext, subscriber::onError, session::close);
+                    return session.send(outputMessages.map(session::textMessage));
+                });
+    }
 
-        return session.send(outputMessages.map(session::textMessage));
+    private Mono<Long> getUserId(WebSocketSession session) {
+        return session.getHandshakeInfo()
+                                .getPrincipal()
+                                .map(Principal::getName)
+                                .map(Long::valueOf);
     }
 
     private long getRoomId(WebSocketSession session) {
         return Long.parseLong(session.getHandshakeInfo()
-                .getUri()
-                .getPath()
-                .replace(CHAT_URL, Strings.EMPTY));
+                                     .getUri()
+                                     .getPath()
+                                     .replace(CHAT_URL, Strings.EMPTY));
     }
 
-    private ChatMessage toChatMessage(String json, long roomId) {
+    private ChatMessage toChatMessage(String json, long roomId, long userId) {
+
         try {
             return mapper.readValue(json, ChatMessage.class)
-                                            .bind(roomId);
+                         .bind(roomId, userId);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Invalid JSON:" + json);

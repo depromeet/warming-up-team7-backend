@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warmup.familytalk.auth.model.User;
 import lombok.*;
+import reactor.core.publisher.Mono;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -20,23 +21,14 @@ class ChatMessage {
     @JsonCreator
     static ChatMessage create(
             @JsonProperty("messageType") MessageType messageType,
-            @JsonProperty("contents") String message,
-            @JsonProperty("sender") Sender sender) {
-        return new ChatMessage(0L, EventType.TALK, sender, messageType, message);
+            @JsonProperty("contents") String message) {
+//            @JsonProperty("sender") Sender sender) {
+        return new ChatMessage(0L, EventType.TALK, null, messageType, message);
     }
 
-    // todo : Request -> token payload
-    static ChatMessage join(User user) {
-        return ChatMessage.builder()
-                .eventType(EventType.ENTER)
-                .messageType(MessageType.TEXT)
-                .contents("User join")
-                .sender(new Sender(user.getUserId()))
-                .build();
-    }
-
-    ChatMessage bind(long roomId) {
+    ChatMessage bind(long roomId, long userId) {
         this.roomId = roomId;
+        this.sender = new Sender(userId);
         return this;
     }
 

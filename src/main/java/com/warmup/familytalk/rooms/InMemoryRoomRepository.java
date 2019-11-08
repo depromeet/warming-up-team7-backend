@@ -13,8 +13,6 @@ public class InMemoryRoomRepository implements RoomRepository {
 
     private static final Map<Long, Room> ROOMS = new ConcurrentHashMap<>();
 
-    public static final Map<Long, Room> ID_TO_ROOM = new ConcurrentHashMap<>();
-
     @Override
     public Mono<Room> save(Room room) {
         room.populate();
@@ -27,9 +25,11 @@ public class InMemoryRoomRepository implements RoomRepository {
         return Mono.just(ROOMS.get(id));
     }
 
-    @Override
     public Mono<Room> findByUserId(long userId) {
-        return Mono.justOrEmpty(ID_TO_ROOM.get(userId));
+        return Mono.justOrEmpty(ROOMS.values()
+                                     .stream()
+                                     .filter(room -> room.isParticipate(userId))
+                                     .findFirst());
     }
 
     @Override

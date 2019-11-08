@@ -1,12 +1,14 @@
 package com.warmup.familytalk.chats;
 
-import com.warmup.familytalk.auth.model.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.UnicastProcessor;
+
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
@@ -30,8 +32,6 @@ class ChatRoom {
         return new ChatRoom(ROOM_ID.incrementAndGet());
     }
 
-    // todo : Token payload -> user connected
-    void join(User user) {
-        eventProcessor.onNext(ChatMessage.join(user));
-    }
+
+
 }

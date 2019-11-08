@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Getter
@@ -15,11 +17,21 @@ public class Room {
     private Long id;
     private String name;
     private User owner;
+    private Set<Long> users = new ConcurrentSkipListSet<>();
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    public static Room create(String name, User owner) {
+        return Room.builder()
+                   .name(name)
+                   .owner(owner)
+                   .createDate(LocalDateTime.now())
+                   .updateDate(LocalDateTime.now())
+                   .build();
+    }
+
     @Builder
-    public Room(Long id,
+    private Room(Long id,
                 String name,
                 User owner,
                 LocalDateTime createDate,
@@ -31,18 +43,17 @@ public class Room {
         this.updateDate = updateDate;
     }
 
-    static Room create(String name, User owner) {
-        return Room.builder()
-                .name(name)
-                .owner(owner)
-                .createDate(LocalDateTime.now())
-                .updateDate(LocalDateTime.now())
-                .build();
-    }
-
     void populate() {
         id = ID.incrementAndGet();
         createDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();
+    }
+
+    void enter(long userId) {
+        users.add(userId);
+    }
+
+    public boolean isParticipate(long userId) {
+        return false;
     }
 }

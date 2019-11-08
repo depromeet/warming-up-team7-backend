@@ -11,10 +11,11 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 public class ChatRouter {
 
-    private static final String CHAT_INFO_URL = "/123/";
+    public static final String CHAT_INFO_URL = "/chatrooms";
 
     @Bean
-    public RouterFunction<ServerResponse> history(ChatHistoryHandler chatHistoryHandler) {
-        return route(GET(CHAT_INFO_URL), chatHistoryHandler::handle);
+    public RouterFunction<ServerResponse> history(ChatRoomHandler chatRoomHandler) {
+        return route(GET(CHAT_INFO_URL + "/{id}"), chatRoomHandler::search)
+                .andRoute(GET(CHAT_INFO_URL), chatRoomHandler::searchByUser);
     }
 }
