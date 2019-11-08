@@ -1,5 +1,6 @@
 package com.warmup.familytalk.chats;
 
+import com.warmup.familytalk.auth.service.JwtService;
 import com.warmup.familytalk.auth.service.UserService;
 import com.warmup.familytalk.bot.service.NewsGeneratorService;
 import com.warmup.familytalk.bot.service.WeatherFetchService;
@@ -36,6 +37,7 @@ public class ChatConfig {
     @Bean
     public HandlerMapping webSocketMapping() {
         Map<String, WebSocketHandler> handlers = new HashMap<>();
+      
         handlers.put(CHAT_URL.concat("**"),
                      new ChatSocketHandler(chatRoomManager,
                                            userService,
