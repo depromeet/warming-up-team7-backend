@@ -15,7 +15,7 @@ public class ChatRouter {
 
     @Bean
     public RouterFunction<ServerResponse> history(ChatRoomHandler chatRoomHandler) {
-        return route(GET(CHAT_INFO_URL + "/{id}"), chatRoomHandler::search)
+        return route(GET(CHAT_INFO_URL + "/participants"), chatRoomHandler::allUserInCurrentRoom)
                 .andRoute(GET(CHAT_INFO_URL), chatRoomHandler::searchByUser);
     }
 }

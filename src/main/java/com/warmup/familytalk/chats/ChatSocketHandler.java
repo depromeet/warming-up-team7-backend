@@ -92,12 +92,6 @@ public class ChatSocketHandler implements WebSocketHandler {
                                    })
                                    .map(message::setMessage);
     }
-/*
-
-    private Mono<User> getUser(WebSocketSession session) {
-        return userService.findByUserId(1l);
-    }
-*/
 
     private Mono<User> getUser(WebSocketSession session) {
         return session.getHandshakeInfo()

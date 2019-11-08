@@ -12,11 +12,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @Slf4j
 public class ChatSocketSubscriber {
 
-    private ChatRoomManager chatRoomManager;
     private UnicastProcessor<ChatMessage> chatMessagePublisher;
 
     ChatSocketSubscriber(ChatRoom chatRoom) {
-//        this.chatRoom = chatRoom;
         this.chatMessagePublisher = chatRoom.getEventProcessor();
     }
 
