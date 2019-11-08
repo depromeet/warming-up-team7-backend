@@ -1,6 +1,10 @@
 package com.warmup.familytalk.chats;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.warmup.familytalk.auth.model.User;
+import com.warmup.familytalk.auth.service.UserService;
+import com.warmup.familytalk.bot.service.NewsGeneratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -21,6 +25,8 @@ import static com.warmup.familytalk.chats.ChatRoomManager.CHATROOMS;
 public class ChatSocketHandler implements WebSocketHandler {
 
     private final ChatRoomManager chatRoomManager;
+    private final UserService userService;
+    private final NewsGeneratorService newsGeneratorService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -30,27 +36,32 @@ public class ChatSocketHandler implements WebSocketHandler {
         log.debug("RoomId : {}", roomId);
         ChatRoom chatRoom = CHATROOMS.getChatRoom(roomId);
 
-        ChatSocketSubscriber subscriber = new ChatSocketSubscriber(chatRoom);
-        return getUserId(session)
-                .flatMap(userId -> {
+        return getUser(session)
+                .flatMap(user -> {
+                    ChatSocketSubscriber subscriber = new ChatSocketSubscriber(chatRoom);
                     Flux<String> outputMessages = Flux.from(chatRoom.getEvent())
                                                       .map(this::toJSON);
-                    chatRoomManager.enter(roomId, userId);
+
+                    chatRoomManager.enter(roomId, user.getUserId());
 
                     session.receive()
                            .map(WebSocketMessage::getPayloadAsText)
-                           .map(it -> toChatMessage(it, roomId, userId))
+                           .map(it -> toChatMessage(it, roomId, user))
                            .subscribe(subscriber::onNext, subscriber::onError, subscriber::onComplete);
 
                     return session.send(outputMessages.map(session::textMessage));
                 });
     }
 
+    private Mono<User> getUser(WebSocketSession session) {
+        return userService.findByUserId(1l);
+    }
+
     private Mono<Long> getUserId(WebSocketSession session) {
         return session.getHandshakeInfo()
-                                .getPrincipal()
-                                .map(Principal::getName)
-                                .map(Long::valueOf);
+                      .getPrincipal()
+                      .map(Principal::getName)
+                      .map(Long::valueOf);
     }
 
     private long getRoomId(WebSocketSession session) {
@@ -60,11 +71,25 @@ public class ChatSocketHandler implements WebSocketHandler {
                                      .replace(CHAT_URL, Strings.EMPTY));
     }
 
-    private ChatMessage toChatMessage(String json, long roomId, long userId) {
-
+    private Mono<ChatMessage> toChatMessage(String json, long roomId, User user) {
         try {
-            return mapper.readValue(json, ChatMessage.class)
-                         .bind(roomId, userId);
+            ChatMessage message = mapper.readValue(json, ChatMessage.class);
+            message.bind(roomId, user);
+
+            if (message.isNews()) {
+                Mono<String> map = newsGeneratorService.fetchRandomNews(user.getCountry(),
+                                                                        NewsGeneratorService.Category.SPORTS)
+                                                       .map(botNewsResponse -> {
+                                                           try {
+                                                               return mapper.writeValueAsString(botNewsResponse);
+                                                           } catch (JsonProcessingException e) {
+                                                               e.printStackTrace();
+                                                               throw new RuntimeException(e);
+                                                           }
+                                                       });
+                message.setMessage(map.block());
+            }
+            return Mono.just(message);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Invalid JSON:" + json);

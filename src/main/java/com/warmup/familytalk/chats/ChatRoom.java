@@ -31,7 +31,4 @@ class ChatRoom {
     static ChatRoom of() {
         return new ChatRoom(ROOM_ID.incrementAndGet());
     }
-
-
-
 }
