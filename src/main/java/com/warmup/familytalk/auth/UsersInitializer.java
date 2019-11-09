@@ -18,29 +18,22 @@ public class UsersInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        Flux<Auth.RegisterRequest> user = Flux.just(
-                new Auth.RegisterRequest("user",
-                                         "user-",
-                                         "password",
-                                         "password",
-                                         "kr",
-                                         "1",
-                                         "EN"),
-                new Auth.RegisterRequest("testuser1",
-                                         "testuser1-",
-                                         "password",
-                                         "password",
-                                         "kr",
-                                         "2",
-                                         "EN"),
-                new Auth.RegisterRequest("testuser2",
-                                         "testuser2-",
-                                         "password",
-                                         "password",
-                                         "kr",
-                                         "3",
-                                         "EN"));
+        Flux<Auth.RegisterRequestOne> user = Flux.just(
+                new Auth.RegisterRequestOne("user",
+                                            "user-",
+                                            "password",
+                                            "password"),
+                new Auth.RegisterRequestOne("testuser1",
+                                            "testuser1-",
+                                            "password",
+                                            "password"
+                ),
+                new Auth.RegisterRequestOne("testuser2",
+                                            "testuser2-",
+                                            "password",
+                                            "password"));
         user.map(userService::createUser)
-            .subscribe(it -> log.debug("Create user: {}", it));
+            .subscribe(it -> log.debug("Create user: {}",
+                                       it));
     }
 }

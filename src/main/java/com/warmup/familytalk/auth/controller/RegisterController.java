@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.warmup.familytalk.auth.model.User;
 import com.warmup.familytalk.auth.service.PasswordService;
 import com.warmup.familytalk.common.Trace;
 import com.warmup.familytalk.auth.model.Auth;
@@ -12,6 +13,7 @@ import com.warmup.familytalk.auth.service.JwtService;
 import com.warmup.familytalk.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -36,11 +38,23 @@ public final class RegisterController {
                           .onErrorReturn(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
-    @PostMapping("/register")
-    public final Mono<ResponseEntity<?>> register(@RequestBody final Auth.RegisterRequest authRequest) {
+    @PostMapping("/register/one")
+    public final Mono<ResponseEntity<?>> registerOne(@RequestBody final Auth.RegisterRequestOne authRequest) {
         passwordService.validate(authRequest);
         userService.createUser(authRequest);
         return Mono.just(ResponseEntity.status(HttpStatus.CREATED).build());
+    }
+
+    @PostMapping("/register/two")
+    public final Mono<ResponseEntity<?>> registerTwo(@RequestBody final Auth.RegisterRequestTwo authRequest) {
+        userService.updateUser(authRequest).subscribe();
+        return Mono.just(ResponseEntity.status(HttpStatus.OK).build());
+    }
+
+    @PostMapping("/register/three")
+    public final Mono<ResponseEntity<?>> registerThree(@RequestBody final Auth.RegisterRequestThree authRequest) {
+        final Disposable subscribe = userService.updateUser(authRequest).subscribe();
+        return Mono.just(ResponseEntity.status(HttpStatus.OK).build());
     }
 }
 

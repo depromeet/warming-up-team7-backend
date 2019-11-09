@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warmup.familytalk.auth.model.User;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.*;
 
 @Getter

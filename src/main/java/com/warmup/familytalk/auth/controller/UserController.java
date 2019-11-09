@@ -23,4 +23,9 @@ public class UserController {
     public final Mono<ResponseEntity<User.Response>> login(@PathVariable final long id) {
         return User.Response.of(userService.findByUserId(id)).map(ResponseEntity::ok);
     }
+
+    @GetMapping("/name/{username}")
+    public final Mono<ResponseEntity<User.Response>> login(@PathVariable final String username) {
+        return User.Response.of(userService.findByUsername(username)).map(ResponseEntity::ok);
+    }
 }
