@@ -42,8 +42,8 @@ public class WebSecurityConfig {
                 .pathMatchers(CHAT_INFO_URL).authenticated()
                 .pathMatchers(CHAT_INFO_URL + "/**").authenticated()
                 .pathMatchers("/test/**").permitAll()
-                .pathMatchers("/login").permitAll()
-                .pathMatchers("/register").permitAll()
+                .pathMatchers("/login/**").permitAll()
+                .pathMatchers("/register/**").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }

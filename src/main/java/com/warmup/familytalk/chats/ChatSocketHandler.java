@@ -59,7 +59,7 @@ public class ChatSocketHandler implements WebSocketHandler {
                                }
                                return Mono.just(it);
                            })
-                           .subscribe(subscriber::onNext, subscriber::onError, subscriber::onComplete);
+                           .subscribe(a -> subscriber.onNext(a), subscriber::onError, subscriber::onComplete);
 
                     return session.send(outputMessages.map(session::textMessage));
                 });

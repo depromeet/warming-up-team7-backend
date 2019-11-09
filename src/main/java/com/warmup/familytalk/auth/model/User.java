@@ -28,7 +28,7 @@ public class User implements UserDetails, PasswordAware {
     private String password;
     private String country;
 
-    private String profileImageNumber;
+    private int profileImageNumber;
 
     private Boolean enabled;
     private Role role;
@@ -78,7 +78,7 @@ public class User implements UserDetails, PasswordAware {
         this.password = password;
     }
 
-    private String toS3ProfileUrl(String imageId) {
+    private String toS3ProfileUrl(int imageId) {
         return String.format("https://team7wp.s3.ap-northeast-2.amazonaws.com/profileImage/%s.png", imageId);
     }
 

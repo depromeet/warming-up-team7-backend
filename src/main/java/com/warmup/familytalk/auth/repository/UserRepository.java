@@ -28,4 +28,9 @@ public class UserRepository {
         userMapById.put(user.getUserId(), user);
         return Mono.just(user);
     }
+
+    public void update(final User user) {
+        userMapByName.put(user.getUsername(), user);
+        userMapById.put(user.getUserId(), user);
+    }
 }

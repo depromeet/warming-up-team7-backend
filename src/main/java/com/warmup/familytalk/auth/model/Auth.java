@@ -17,16 +17,27 @@ public class Auth {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class RegisterRequest implements PasswordAware {
+    public static class RegisterRequestOne implements PasswordAware {
         private String username;
         private String nickname;
         private String password;
         private String passwordForValidation;
-        private String country;
-        private String profileImageNumber;
+    }
 
-        // TODO: not just using String class
-        private String region;
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RegisterRequestTwo {
+        private String username;
+        private String country;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RegisterRequestThree {
+        private String username;
+        private int profileImageNumber;
     }
 
     @Data

@@ -25,18 +25,34 @@ public class UserService {
         return userRepository.getUserById(userId);
     }
 
-    public Mono<User> createUser(final Auth.RegisterRequest request) {
+    public Mono<User> createUser(final Auth.RegisterRequestOne request) {
         return userRepository.save(toUser(request));
     }
 
-    private User toUser(Auth.RegisterRequest request) {
+    public Mono<User> updateUser(final Auth.RegisterRequestTwo request) {
+        return userRepository.getUserByUsername(request.getUsername())
+                             .map(user -> {
+                                 user.setCountry(request.getCountry());
+                                 return user;
+                             });
+    }
+
+    public Mono<User> updateUser(final Auth.RegisterRequestThree request) {
+        return userRepository.getUserByUsername(request.getUsername())
+                             .map(user -> {
+                                 user.setProfileImageNumber(request.getProfileImageNumber());
+                                 return user;
+                             });
+    }
+
+    private User toUser(Auth.RegisterRequestOne request) {
         final String encodedPassword = passwordService.encode(request.getPassword());
         return new User(-1,
                         request.getUsername(),
                         request.getNickname(),
                         encodedPassword,
-                        request.getCountry(),
-                        request.getProfileImageNumber(),
+                        "kr",
+                        1,
                         true,
                         Role.ROLE_USER);
     }
